@@ -1,0 +1,481 @@
+provincia_id,provincia_nombre,apellido,ranking,porcentaje_poblacion_portadora
+6,Buenos Aires,González,1,1.72
+6,Buenos Aires,Rodríguez,2,1.326
+6,Buenos Aires,Gómez,3,1.219
+6,Buenos Aires,Fernández,4,1.147
+6,Buenos Aires,López,5,1.092
+6,Buenos Aires,Martínez,6,1.013
+6,Buenos Aires,Díaz,7,0.852
+6,Buenos Aires,García,8,0.794
+6,Buenos Aires,Pérez,9,0.771
+6,Buenos Aires,Sánchez,10,0.713
+6,Buenos Aires,Romero,11,0.688
+6,Buenos Aires,Benítez,12,0.592
+6,Buenos Aires,Sosa,13,0.496
+6,Buenos Aires,Ramírez,14,0.496
+6,Buenos Aires,Ruiz,15,0.474
+6,Buenos Aires,Álvarez,16,0.472
+6,Buenos Aires,Torres,17,0.44
+6,Buenos Aires,Acosta,18,0.436
+6,Buenos Aires,Rojas,19,0.416
+6,Buenos Aires,Medina,20,0.407
+10,Catamarca,Carrizo,1,1.986
+10,Catamarca,Díaz,2,1.549
+10,Catamarca,Romero,3,1.513
+10,Catamarca,Rodríguez,4,1.399
+10,Catamarca,Herrera,5,1.364
+10,Catamarca,Nieva,6,1.223
+10,Catamarca,Barrionuevo,7,1.062
+10,Catamarca,González,8,0.981
+10,Catamarca,Gómez,9,0.962
+10,Catamarca,Vega,10,0.951
+10,Catamarca,Moreno,11,0.861
+10,Catamarca,Córdoba,12,0.829
+10,Catamarca,Bazán,13,0.805
+10,Catamarca,López,14,0.777
+10,Catamarca,Gutiérrez,15,0.775
+10,Catamarca,Quiroga,16,0.714
+10,Catamarca,Soria,17,0.692
+10,Catamarca,Castro,18,0.679
+10,Catamarca,Álvarez,19,0.642
+10,Catamarca,Martínez,20,0.639
+22,Chaco,Gómez,1,2.716
+22,Chaco,González,2,2.204
+22,Chaco,Fernández,3,1.812
+22,Chaco,Romero,4,1.615
+22,Chaco,López,5,1.579
+22,Chaco,Sánchez,6,1.317
+22,Chaco,Ramírez,7,1.243
+22,Chaco,Martínez,8,0.962
+22,Chaco,Aguirre,9,0.956
+22,Chaco,Rodríguez,10,0.956
+22,Chaco,Benítez,11,0.877
+22,Chaco,Díaz,12,0.877
+22,Chaco,Sosa,13,0.839
+22,Chaco,Pérez,14,0.81
+22,Chaco,Ruiz,15,0.736
+22,Chaco,Ojeda,16,0.735
+22,Chaco,García,17,0.722
+22,Chaco,Acosta,18,0.687
+22,Chaco,Medina,19,0.683
+22,Chaco,Barrios,20,0.618
+26,Chubut,González,1,1.479
+26,Chubut,Díaz,2,1.006
+26,Chubut,Rodríguez,3,0.957
+26,Chubut,Fernández,4,0.834
+26,Chubut,López,5,0.801
+26,Chubut,Martínez,6,0.794
+26,Chubut,Pérez,7,0.767
+26,Chubut,García,8,0.745
+26,Chubut,Gómez,9,0.671
+26,Chubut,Muñoz,10,0.589
+26,Chubut,Sánchez,11,0.567
+26,Chubut,Soto,12,0.551
+26,Chubut,Vargas,13,0.538
+26,Chubut,Mansilla,14,0.525
+26,Chubut,Hernández,15,0.522
+26,Chubut,Álvarez,16,0.506
+26,Chubut,Flores,17,0.478
+26,Chubut,Torres,18,0.472
+26,Chubut,Romero,19,0.418
+26,Chubut,Morales,20,0.405
+2,Ciudad Autónoma de Buenos Aires,González,1,1.281
+2,Ciudad Autónoma de Buenos Aires,Rodríguez,2,1.206
+2,Ciudad Autónoma de Buenos Aires,Fernández,3,1.058
+2,Ciudad Autónoma de Buenos Aires,López,4,0.965
+2,Ciudad Autónoma de Buenos Aires,García,5,0.888
+2,Ciudad Autónoma de Buenos Aires,Martínez,6,0.847
+2,Ciudad Autónoma de Buenos Aires,Pérez,7,0.693
+2,Ciudad Autónoma de Buenos Aires,Gómez,8,0.692
+2,Ciudad Autónoma de Buenos Aires,Sánchez,9,0.577
+2,Ciudad Autónoma de Buenos Aires,Díaz,10,0.577
+2,Ciudad Autónoma de Buenos Aires,Álvarez,11,0.45
+2,Ciudad Autónoma de Buenos Aires,Romero,12,0.42
+2,Ciudad Autónoma de Buenos Aires,Flores,13,0.372
+2,Ciudad Autónoma de Buenos Aires,Ramírez,14,0.35
+2,Ciudad Autónoma de Buenos Aires,Mamani,15,0.345
+2,Ciudad Autónoma de Buenos Aires,Benítez,16,0.339
+2,Ciudad Autónoma de Buenos Aires,Rojas,17,0.337
+2,Ciudad Autónoma de Buenos Aires,Ruiz,18,0.322
+2,Ciudad Autónoma de Buenos Aires,Torres,19,0.316
+2,Ciudad Autónoma de Buenos Aires,Gutiérrez,20,0.312
+14,Córdoba,González,1,1.386
+14,Córdoba,Rodríguez,2,1.288
+14,Córdoba,López,3,1.1
+14,Córdoba,Díaz,4,0.999
+14,Córdoba,Gómez,5,0.929
+14,Córdoba,Martínez,6,0.833
+14,Córdoba,Sánchez,7,0.813
+14,Córdoba,Romero,8,0.804
+14,Córdoba,Fernández,9,0.753
+14,Córdoba,Pérez,10,0.741
+14,Córdoba,Pereyra,11,0.62
+14,Córdoba,Torres,12,0.587
+14,Córdoba,Peralta,13,0.58
+14,Córdoba,García,14,0.556
+14,Córdoba,Ferreyra,15,0.553
+14,Córdoba,Sosa,16,0.541
+14,Córdoba,Molina,17,0.522
+14,Córdoba,Bustos,18,0.481
+14,Córdoba,Álvarez,19,0.471
+14,Córdoba,Moyano,20,0.455
+18,Corrientes,Gómez,1,2.727
+18,Corrientes,Fernández,2,2.384
+18,Corrientes,González,3,2.277
+18,Corrientes,Romero,4,2.267
+18,Corrientes,Ramírez,5,1.638
+18,Corrientes,López,6,1.472
+18,Corrientes,Benítez,7,1.348
+18,Corrientes,Rodríguez,8,1.302
+18,Corrientes,Sánchez,9,1.243
+18,Corrientes,Aguirre,10,1.167
+18,Corrientes,Ojeda,11,1.059
+18,Corrientes,Martínez,12,1.015
+18,Corrientes,Sosa,13,0.853
+18,Corrientes,Maidana,14,0.805
+18,Corrientes,Vallejos,15,0.782
+18,Corrientes,Alegre,16,0.753
+18,Corrientes,Barrios,17,0.712
+18,Corrientes,Ayala,18,0.692
+18,Corrientes,Pérez,19,0.688
+18,Corrientes,Cardozo,20,0.67
+30,Entre Ríos,González,1,1.816
+30,Entre Ríos,Martínez,2,1.42
+30,Entre Ríos,Rodríguez,3,1.304
+30,Entre Ríos,Gómez,4,1.212
+30,Entre Ríos,Fernández,5,0.946
+30,Entre Ríos,López,6,0.919
+30,Entre Ríos,Benítez,7,0.863
+30,Entre Ríos,Romero,8,0.844
+30,Entre Ríos,Pérez,9,0.743
+30,Entre Ríos,García,10,0.684
+30,Entre Ríos,Díaz,11,0.66
+30,Entre Ríos,Sánchez,12,0.659
+30,Entre Ríos,Godoy,13,0.64
+30,Entre Ríos,Ramírez,14,0.635
+30,Entre Ríos,Acosta,15,0.532
+30,Entre Ríos,Giménez,16,0.53
+30,Entre Ríos,Sosa,17,0.464
+30,Entre Ríos,Rios,18,0.462
+30,Entre Ríos,Ruiz,19,0.449
+30,Entre Ríos,Cabrera,20,0.441
+34,Formosa,González,1,2.581
+34,Formosa,Gómez,2,2.04
+34,Formosa,Benítez,3,1.543
+34,Formosa,Martínez,4,1.429
+34,Formosa,Fernández,5,1.426
+34,Formosa,López,6,1.244
+34,Formosa,Romero,7,1.041
+34,Formosa,Ruiz,8,1.041
+34,Formosa,Giménez,9,1.036
+34,Formosa,Ramírez,10,0.991
+34,Formosa,Rojas,11,0.948
+34,Formosa,Pérez,12,0.936
+34,Formosa,Torres,13,0.917
+34,Formosa,Sánchez,14,0.896
+34,Formosa,Acosta,15,0.872
+34,Formosa,Díaz,16,0.858
+34,Formosa,Ayala,17,0.845
+34,Formosa,Sosa,18,0.799
+34,Formosa,Villalba,19,0.795
+34,Formosa,García,20,0.775
+38,Jujuy,Mamani,1,2.219
+38,Jujuy,Cruz,2,2.218
+38,Jujuy,Flores,3,1.919
+38,Jujuy,Martínez,4,1.347
+38,Jujuy,Gutiérrez,5,1.274
+38,Jujuy,Rodríguez,6,1.179
+38,Jujuy,López,7,1.154
+38,Jujuy,Quispe,8,0.974
+38,Jujuy,Díaz,9,0.876
+38,Jujuy,Fernández,10,0.848
+38,Jujuy,González,11,0.847
+38,Jujuy,Ramos,12,0.842
+38,Jujuy,Tolaba,13,0.836
+38,Jujuy,Vargas,14,0.783
+38,Jujuy,Sánchez,15,0.724
+38,Jujuy,Farfán,16,0.657
+38,Jujuy,Condori,17,0.653
+38,Jujuy,Romero,18,0.632
+38,Jujuy,Cardozo,19,0.618
+38,Jujuy,Torres,20,0.616
+42,La Pampa,Rodríguez,1,1.466
+42,La Pampa,González,2,1.308
+42,La Pampa,Fernández,3,1.159
+42,La Pampa,Pérez,4,1.134
+42,La Pampa,García,5,1.087
+42,La Pampa,Díaz,6,0.966
+42,La Pampa,López,7,0.925
+42,La Pampa,Gómez,8,0.905
+42,La Pampa,Martínez,9,0.842
+42,La Pampa,Sosa,10,0.703
+42,La Pampa,Lucero,11,0.662
+42,La Pampa,Álvarez,12,0.631
+42,La Pampa,Sánchez,13,0.621
+42,La Pampa,Torres,14,0.537
+42,La Pampa,Giménez,15,0.463
+42,La Pampa,Romero,16,0.458
+42,La Pampa,Domínguez,17,0.446
+42,La Pampa,Muñoz,18,0.438
+42,La Pampa,Suárez,19,0.418
+42,La Pampa,Miranda,20,0.385
+46,La Rioja,Díaz,1,2.505
+46,La Rioja,Romero,2,1.918
+46,La Rioja,González,3,1.78
+46,La Rioja,Páez,4,1.563
+46,La Rioja,Herrera,5,1.391
+46,La Rioja,Carrizo,6,1.344
+46,La Rioja,Rodríguez,7,1.313
+46,La Rioja,Flores,8,1.263
+46,La Rioja,Mercado,9,1.248
+46,La Rioja,Moreno,10,1.234
+46,La Rioja,Gómez,11,1.042
+46,La Rioja,Nieto,12,1.007
+46,La Rioja,Vega,13,0.964
+46,La Rioja,Luna,14,0.917
+46,La Rioja,Ávila,15,0.903
+46,La Rioja,Castro,16,0.867
+46,La Rioja,Molina,17,0.863
+46,La Rioja,Brizuela,18,0.854
+46,La Rioja,Torres,19,0.844
+46,La Rioja,Fernández,20,0.821
+50,Mendoza,González,1,1.634
+50,Mendoza,Rodríguez,2,1.187
+50,Mendoza,Martínez,3,1.136
+50,Mendoza,Fernández,4,1.071
+50,Mendoza,Pérez,5,0.971
+50,Mendoza,Díaz,6,0.945
+50,Mendoza,Gómez,7,0.911
+50,Mendoza,López,8,0.871
+50,Mendoza,Sosa,9,0.835
+50,Mendoza,García,10,0.8
+50,Mendoza,Lucero,11,0.779
+50,Mendoza,Sánchez,12,0.749
+50,Mendoza,Quiroga,13,0.74
+50,Mendoza,Morales,14,0.681
+50,Mendoza,Flores,15,0.64
+50,Mendoza,Castro,16,0.614
+50,Mendoza,Torres,17,0.585
+50,Mendoza,Muñoz,18,0.559
+50,Mendoza,Ortiz,19,0.492
+50,Mendoza,Videla,20,0.492
+54,Misiones,Rodríguez,1,2.066
+54,Misiones,González,2,2.025
+54,Misiones,Benítez,3,1.682
+54,Misiones,Martínez,4,1.298
+54,Misiones,López,5,1.22
+54,Misiones,Gómez,6,1.145
+54,Misiones,Fernández,7,1.08
+54,Misiones,Da Silva,8,1.059
+54,Misiones,Dos Santos,9,0.837
+54,Misiones,Villalba,10,0.758
+54,Misiones,Ramírez,11,0.748
+54,Misiones,Duarte,12,0.746
+54,Misiones,Sosa,13,0.703
+54,Misiones,Nuñez,14,0.666
+54,Misiones,Álvez,15,0.655
+54,Misiones,Acosta,16,0.644
+54,Misiones,Olivera,17,0.636
+54,Misiones,Silva,18,0.602
+54,Misiones,Giménez,19,0.586
+54,Misiones,Baez,20,0.577
+58,Neuquén,González,1,1.359
+58,Neuquén,Muñoz,2,1.127
+58,Neuquén,Rodríguez,3,1.09
+58,Neuquén,Martínez,4,0.862
+58,Neuquén,López,5,0.831
+58,Neuquén,Díaz,6,0.736
+58,Neuquén,Fernández,7,0.705
+58,Neuquén,Pérez,8,0.702
+58,Neuquén,Jara,9,0.675
+58,Neuquén,Sepúlveda,10,0.674
+58,Neuquén,García,11,0.655
+58,Neuquén,Sánchez,12,0.64
+58,Neuquén,Castillo,13,0.636
+58,Neuquén,Gómez,14,0.633
+58,Neuquén,Fuentes,15,0.628
+58,Neuquén,Hernández,16,0.596
+58,Neuquén,Soto,17,0.585
+58,Neuquén,Vázquez,18,0.578
+58,Neuquén,Morales,19,0.577
+58,Neuquén,Gutiérrez,20,0.557
+62,Río Negro,González,1,1.36
+62,Río Negro,Martínez,2,1.01
+62,Río Negro,Rodríguez,3,1.002
+62,Río Negro,Muñoz,4,0.92
+62,Río Negro,Fernández,5,0.859
+62,Río Negro,García,6,0.856
+62,Río Negro,López,7,0.819
+62,Río Negro,Pérez,8,0.763
+62,Río Negro,Díaz,9,0.74
+62,Río Negro,Sánchez,10,0.626
+62,Río Negro,Gómez,11,0.534
+62,Río Negro,Morales,12,0.53
+62,Río Negro,Hernández,13,0.528
+62,Río Negro,Torres,14,0.521
+62,Río Negro,Sepúlveda,15,0.499
+62,Río Negro,Sandoval,16,0.486
+62,Río Negro,Jara,17,0.453
+62,Río Negro,Gutiérrez,18,0.451
+62,Río Negro,Flores,19,0.451
+62,Río Negro,Soto,20,0.441
+66,Salta,López,1,1.875
+66,Salta,Flores,2,1.437
+66,Salta,Rodríguez,3,1.289
+66,Salta,Díaz,4,1.279
+66,Salta,Cruz,5,1.175
+66,Salta,Martínez,6,1.132
+66,Salta,González,7,1.048
+66,Salta,Mamani,8,1.011
+66,Salta,Ruiz,9,0.992
+66,Salta,Romero,10,0.968
+66,Salta,Gutiérrez,11,0.952
+66,Salta,Torres,12,0.811
+66,Salta,Pérez,13,0.784
+66,Salta,Sánchez,14,0.78
+66,Salta,Gómez,15,0.765
+66,Salta,Fernández,16,0.733
+66,Salta,García,17,0.711
+66,Salta,Rojas,18,0.599
+66,Salta,Cardozo,19,0.582
+66,Salta,Arias,20,0.569
+70,San Juan,Castro,1,1.882
+70,San Juan,González,2,1.774
+70,San Juan,Díaz,3,1.558
+70,San Juan,Rodríguez,4,1.34
+70,San Juan,Fernández,5,1.251
+70,San Juan,Gómez,6,1.165
+70,San Juan,Sánchez,7,1.161
+70,San Juan,Flores,8,1.105
+70,San Juan,Pérez,9,1.076
+70,San Juan,Quiroga,10,1.054
+70,San Juan,Molina,11,0.939
+70,San Juan,Páez,12,0.935
+70,San Juan,Cortez,13,0.818
+70,San Juan,Carrizo,14,0.807
+70,San Juan,López,15,0.732
+70,San Juan,Muñoz,16,0.73
+70,San Juan,García,17,0.703
+70,San Juan,Tejada,18,0.667
+70,San Juan,Morales,19,0.66
+70,San Juan,Torres,20,0.647
+74,San Luis,Lucero,1,2.241
+74,San Luis,Sosa,2,1.888
+74,San Luis,Fernández,3,1.416
+74,San Luis,Rodríguez,4,1.351
+74,San Luis,Quiroga,5,1.239
+74,San Luis,González,6,1.164
+74,San Luis,Pérez,7,1.137
+74,San Luis,Gómez,8,1.123
+74,San Luis,Torres,9,1.064
+74,San Luis,Muñoz,10,0.988
+74,San Luis,Escudero,11,0.935
+74,San Luis,López,12,0.868
+74,San Luis,Díaz,13,0.859
+74,San Luis,Miranda,14,0.844
+74,San Luis,Suárez,15,0.78
+74,San Luis,Godoy,16,0.715
+74,San Luis,Villegas,17,0.703
+74,San Luis,Barroso,18,0.68
+74,San Luis,Ortiz,19,0.66
+74,San Luis,García,20,0.646
+78,Santa Cruz,González,1,1.483
+78,Santa Cruz,Díaz,2,1.137
+78,Santa Cruz,Rodríguez,3,1.105
+78,Santa Cruz,Gómez,4,0.934
+78,Santa Cruz,Martínez,5,0.921
+78,Santa Cruz,Pérez,6,0.893
+78,Santa Cruz,Fernández,7,0.882
+78,Santa Cruz,López,8,0.849
+78,Santa Cruz,Sánchez,9,0.672
+78,Santa Cruz,Vargas,10,0.655
+78,Santa Cruz,García,11,0.65
+78,Santa Cruz,Ruiz,12,0.644
+78,Santa Cruz,Álvarez,13,0.629
+78,Santa Cruz,Muñoz,14,0.613
+78,Santa Cruz,Romero,15,0.61
+78,Santa Cruz,Vera,16,0.609
+78,Santa Cruz,Flores,17,0.595
+78,Santa Cruz,Ojeda,18,0.563
+78,Santa Cruz,Cárdenas,19,0.547
+78,Santa Cruz,Torres,20,0.547
+82,Santa Fe,González,1,1.394
+82,Santa Fe,Gómez,2,1.217
+82,Santa Fe,Rodríguez,3,1.095
+82,Santa Fe,Fernández,4,1.016
+82,Santa Fe,López,5,0.962
+82,Santa Fe,Martínez,6,0.908
+82,Santa Fe,Díaz,7,0.753
+82,Santa Fe,Sánchez,8,0.728
+82,Santa Fe,Pérez,9,0.694
+82,Santa Fe,Romero,10,0.679
+82,Santa Fe,García,11,0.665
+82,Santa Fe,Ramírez,12,0.562
+82,Santa Fe,Acosta,13,0.543
+82,Santa Fe,Benítez,14,0.475
+82,Santa Fe,Aguirre,15,0.474
+82,Santa Fe,Sosa,16,0.47
+82,Santa Fe,Ruiz,17,0.412
+82,Santa Fe,Ojeda,18,0.394
+82,Santa Fe,Álvarez,19,0.392
+82,Santa Fe,Torres,20,0.358
+86,Santiago del Estero,Díaz,1,2.342
+86,Santiago del Estero,Gómez,2,2.188
+86,Santiago del Estero,González,3,1.452
+86,Santiago del Estero,Juárez,4,1.396
+86,Santiago del Estero,Paz,5,1.341
+86,Santiago del Estero,Ruiz,6,1.333
+86,Santiago del Estero,Rodríguez,7,1.262
+86,Santiago del Estero,Coronel,8,1.244
+86,Santiago del Estero,Suárez,9,1.191
+86,Santiago del Estero,Ledesma,10,1.153
+86,Santiago del Estero,Herrera,11,1.115
+86,Santiago del Estero,Luna,12,1.098
+86,Santiago del Estero,Pérez,13,0.987
+86,Santiago del Estero,Santillán,14,0.956
+86,Santiago del Estero,Sosa,15,0.9
+86,Santiago del Estero,Jiménez,16,0.853
+86,Santiago del Estero,Rojas,17,0.826
+86,Santiago del Estero,López,18,0.798
+86,Santiago del Estero,Gerez,19,0.78
+86,Santiago del Estero,Mansilla,20,0.777
+94,Tierra del Fuego,González,1,1.585
+94,Tierra del Fuego,Rodríguez,2,1.188
+94,Tierra del Fuego,Gómez,3,1.104
+94,Tierra del Fuego,Díaz,4,0.973
+94,Tierra del Fuego,López,5,0.965
+94,Tierra del Fuego,Martínez,6,0.934
+94,Tierra del Fuego,Pérez,7,0.911
+94,Tierra del Fuego,Fernández,8,0.9
+94,Tierra del Fuego,Sánchez,9,0.746
+94,Tierra del Fuego,García,10,0.726
+94,Tierra del Fuego,Romero,11,0.673
+94,Tierra del Fuego,Vargas,12,0.653
+94,Tierra del Fuego,Flores,13,0.617
+94,Tierra del Fuego,Torres,14,0.607
+94,Tierra del Fuego,Ruiz,15,0.534
+94,Tierra del Fuego,Álvarez,16,0.515
+94,Tierra del Fuego,Benítez,17,0.497
+94,Tierra del Fuego,Ramírez,18,0.44
+94,Tierra del Fuego,Sosa,19,0.429
+94,Tierra del Fuego,Nuñez,20,0.405
+90,Tucumán,Díaz,1,2.203
+90,Tucumán,González,2,1.896
+90,Tucumán,Rodríguez,3,1.623
+90,Tucumán,Juárez,4,1.494
+90,Tucumán,Medina,5,1.411
+90,Tucumán,Gómez,6,1.337
+90,Tucumán,López,7,1.101
+90,Tucumán,Ruiz,8,0.983
+90,Tucumán,Pérez,9,0.973
+90,Tucumán,Fernández,10,0.905
+90,Tucumán,Sánchez,11,0.866
+90,Tucumán,Herrera,12,0.863
+90,Tucumán,Soria,13,0.713
+90,Tucumán,Romano,14,0.707
+90,Tucumán,Jiménez,15,0.704
+90,Tucumán,Carrizo,16,0.686
+90,Tucumán,García,17,0.635
+90,Tucumán,Suárez,18,0.595
+90,Tucumán,Lazarte,19,0.568
+90,Tucumán,Molina,20,0.562

@@ -1,0 +1,529 @@
+
+=== Archivo: apellidos_provincia ===
+
+Columna: apellido
+
+  Carácter: 'ñ'
+    -> Acuña
+    -> Nuñez
+    -> Muñoz
+
+  Carácter: 'ü'
+    -> Müller
+    -> Argüello
+    -> Agüero
+
+  Carácter: 'ç'
+    -> Eliçabe
+    -> Gonçalves
+    -> Mendonça
+
+  Carácter: 'Ñ'
+    -> Ñañez
+    -> Ñanco
+    -> Ñamandu
+
+  Carácter: 'ö'
+    -> Schönfeld
+    -> Götte
+    -> König
+
+  Carácter: '´'
+    -> D´Angelo
+    -> D´Agostino
+    -> D´
+
+  Carácter: 'ä'
+    -> Schäfer
+    -> Krämer
+    -> Schäffer
+
+  Carácter: 'ò'
+    -> Lòpez
+    -> Monzòn
+    -> Leguizamòn
+
+  Carácter: 'ë'
+    -> Lanoël
+    -> Noël
+    -> Willemoës
+
+  Carácter: 'û'
+    -> Agûero
+    -> Mûller
+    -> Argûello
+
+  Carácter: 'ù'
+    -> Guiñazù
+    -> Murùa
+    -> Abregù
+
+  Carácter: 'è'
+    -> Perès
+    -> Cufrè
+    -> Durè
+
+  Carácter: 'ì'
+    -> Garcìa
+    -> Martìnez
+    -> Dìaz
+
+  Carácter: 'Ü'
+    -> Überall
+    -> Üeberfeld
+
+Columna: provincia_nombre
+
+  Carácter: 'ó'
+    -> Córdoba
+
+  Carácter: 'í'
+    -> Río Negro
+    -> Entre Ríos
+
+  Carácter: 'é'
+    -> Neuquén
+
+  Carácter: 'á'
+    -> Tucumán
+
+=== Archivo: apellidos_pais ===
+
+Columna: apellido
+
+  Carácter: 'á'
+    -> González
+    -> Sánchez
+    -> Fernández
+
+  Carácter: 'í'
+    -> Martínez
+    -> Rodríguez
+    -> Díaz
+
+  Carácter: 'ó'
+    -> Gómez
+    -> López
+
+  Carácter: 'é'
+    -> Pérez
+
+  Carácter: 'Á'
+    -> Álvarez
+
+=== Archivo: apellidos_provincia_ranking ===
+
+Columna: provincia_nombre
+
+  Carácter: 'ó'
+    -> Ciudad Autónoma de Bu
+    -> Córdoba
+
+  Carácter: 'í'
+    -> Río Negro
+    -> Entre Ríos
+
+  Carácter: 'é'
+    -> Neuquén
+
+  Carácter: 'á'
+    -> Tucumán
+
+Columna: apellido
+
+  Carácter: 'á'
+    -> González
+    -> Sánchez
+    -> Fernández
+
+  Carácter: 'í'
+    -> Martínez
+    -> Rodríguez
+    -> Díaz
+
+  Carácter: 'ó'
+    -> Gómez
+    -> López
+    -> Córdoba
+
+  Carácter: 'é'
+    -> Pérez
+    -> Giménez
+    -> Gutiérrez
+
+  Carácter: 'Á'
+    -> Ávila
+    -> Álvez
+    -> Álvarez
+
+  Carácter: 'ñ'
+    -> Nuñez
+    -> Muñoz
+
+  Carácter: 'ú'
+    -> Sepúlveda
+
+=== Archivo: historico-nombres ===
+
+Columna: nombre
+
+  Carácter: 'é'
+    -> José Maria
+    -> Juan José
+    -> Angélica
+
+  Carácter: 'ú'
+    -> Jesús
+    -> Maria Jesús
+    -> oberto Jesús
+
+  Carácter: 'ó'
+    -> Asunción
+    -> Encarnación
+    -> ría Asunción
+
+  Carácter: 'í'
+    -> María Azucena
+    -> María Juana
+    -> Brígida
+
+  Carácter: 'è'
+    -> omàs Salomè
+    -> Amelia Nèlida
+    -> osefina Inès
+
+  Carácter: 'Ú'
+    -> Mario RaÚl
+    -> dan De JesÚs
+    -> RaÚl Roberto
+
+  Carácter: 'É'
+    -> Rosalia InÉs
+    -> Teodora MÉlida
+    -> InÉs Gumersin
+
+  Carácter: 'à'
+    -> Tomàs Jorge
+    -> Tomàs Salomè
+    -> ntos Escolàstica
+
+  Carácter: 'á'
+    -> José Adrián
+    -> Plácido Migue
+    -> Antonio Cándido
+
+  Carácter: 'ù'
+    -> zòn De Jesùs
+    -> Teresa Jesùs
+    -> isa De Jesùs
+
+  Carácter: 'ò'
+    -> Salomòn Leòn
+    -> Del Corazòn De Jesùs
+    -> a Concepciòn
+
+  Carácter: 'ä'
+    -> Pertti Päiviö
+    -> rgarethe Bärbel Eleon
+    -> Bärbel Karin
+
+  Carácter: 'ü'
+    -> Angel Güerino
+    -> Elida Güendolina
+    -> Günter
+
+  Carácter: 'ñ'
+    -> ria Del Señor
+    -> uel del Señor
+    -> ela del Señor
+
+  Carácter: 'ì'
+    -> Marìa Celina
+    -> Juana Marìa
+    -> ose Benjamìn
+
+  Carácter: 'Ñ'
+    -> ucia EnsueÑo
+    -> ina del SeÑor
+    -> ura del SeÑor
+
+  Carácter: 'Í'
+    -> erto AgustÍn
+    -> Ana MarÍa Esther
+    -> garita LucÍa
+
+  Carácter: 'ô'
+    -> Ramôn  Ariel
+    -> Juan Ramôn
+    -> ri Marie Nôel
+
+  Carácter: 'Á'
+    -> Nicolás Ángel
+    -> ía De Los Ángeles
+    -> Olivia Ángela
+
+  Carácter: 'ï'
+    -> Faïze
+    -> Loïc Fernand
+    -> Sofïa Carmen
+
+  Carácter: 'ö'
+    -> Abel Trifön
+    -> Börge René
+    -> que Tornbjörn
+
+  Carácter: 'ç'
+    -> o Da Ascençao
+    -> Da Conceiçao
+    -> a Concepciçon
+
+  Carácter: '¤'
+    -> Jose Mari¤o
+    -> ion Del Se¤or
+    -> Iba¤ez Nieves
+
+  Carácter: 'Ó'
+    -> JosÓ NÉstor
+    -> stacio RamÓn
+    -> MerÓs Richard
+
+  Carácter: '°'
+    -> Carlos 2°
+    -> RICARDO °
+    -> Antonio 2°
+
+  Carácter: 'ã'
+    -> Da Conceicão
+    -> Da Conceição
+    -> Ramão Luiz
+
+  Carácter: 'È'
+    -> Angel SilvÈrio
+    -> Perla CÈlica
+    -> s BartolomÈ
+
+  Carácter: 'Ü'
+    -> GÜifredo Ren
+    -> Pedro ArgÜez
+    -> GÜilfredo
+
+  Carácter: 'Ì'
+    -> MarÌa Celeste
+    -> Martha MarÌa
+    -> olfo SerafÌn
+
+  Carácter: 'â'
+    -> cina Del Cârmen
+    -> Da Conceicâo
+    -> Joâo  Maria
+
+  Carácter: 'ë'
+    -> an Yves Noël
+    -> Staël Marina
+    -> Cora Noël
+
+  Carácter: 'Ù'
+    -> RaÙl Emeregil
+    -> Hector RaÙl
+    -> duardo JesÙs
+
+  Carácter: 'Ò'
+    -> RAMÒN OLEGARIO
+    -> AscenciÒn Inocenci
+    -> VERÒNICA FILOM
+
+  Carácter: 'î'
+    -> Marîa Elilia J
+    -> orgina Lucîa
+    -> r Jose Marîa
+
+  Carácter: 'ê'
+    -> elardo Josê
+    -> Marinês
+    -> Gardênia  Carol
+
+  Carácter: 'û'
+    -> Gerardo Raûl
+    -> Gûnter
+    -> Martin Gûnther
+
+  Carácter: 'Ç'
+    -> ria Da GraÇa
+    -> FranÇoise Henri
+    -> ia Das GraÇas
+
+  Carácter: 'Ö'
+    -> Veikko YrjÖ Henrik
+    -> MARKUS JÖRG
+    -> BjÖrn
+
+  Carácter: '´'
+    -> ebe Haydee´
+    -> Haydee´ Carlota
+    -> racio Jose´
+
+  Carácter: 'ý'
+    -> Ifraý Engracio
+    -> Rosa Marýa
+    -> iryan Noemý
+
+  Carácter: 'º'
+    -> ia Valeriaº
+    -> Raul 2º
+    -> Rosendo 2º
+
+  Carácter: 'Ã'
+    -> JoÃo Clair
+    -> ENCARNAÇÃO
+    -> alina GideÃo De
+
+  Carácter: 'Â'
+    -> RosÂngela Glor
+    -> MARLÂNIA MARIA
+    -> JoÂo Aroldo
+
+  Carácter: 'À'
+    -> DÀmaso Oscar
+    -> IANO  HERNÀN
+    -> la De Los Àngeles
+
+  Carácter: 'Ë'
+    -> DACO DANIËL
+    -> d Regis JoËl
+    -> E MARIE NOËLLE
+
+  Carácter: 'µ'
+    -> an de los µngeles
+    -> Gustabo µdolfo
+    -> ¡a de los µngeles
+
+  Carácter: 'Ấ'
+    -> JOẤO MATEUS
+    -> JOẤO CARLOS
+
+  Carácter: 'Ô'
+    -> istina LenÔra
+    -> ANTÔNIO DE PÁD
+    -> VERÔNNICA
+
+  Carácter: 'Ï'
+    -> LoÏc Paul
+    -> MAGALI MAÏTE
+    -> trice AnnaÏck Gilbert
+
+  Carácter: '¡'
+    -> Noem¡ Alejandra
+    -> Mar¡a Jose
+    -> Mar¡a de los A
+
+  Carácter: 'Ø'
+    -> ian Rune MØller
+    -> SØren
+
+  Carácter: 'Î'
+    -> BENOÎT MARIE FL
+    -> JulÎan Leandro
+    -> alome JazmÎn
+
+  Carácter: '\x82'
+    -> Jose Antonio
+    -> Jose Luis
+    -> atias José
+
+  Carácter: '£'
+    -> Juan Jes£s
+    -> Jes£s German
+    -> oberto Jes£s
+
+  Carácter: 'Ä'
+    -> Lucia Ängela Jose
+    -> ISAÄC PIETER M
+    -> ELISÄNGELA
+
+  Carácter: '¢'
+    -> Juan Ram¢n
+    -> Ram¢n
+    -> Diego Gast¢n
+
+  Carácter: '\xa0'
+    -> Cristian daniel
+    -> tor Adrian
+    -> Luis Fabi n
+
+  Carácter: '\x93'
+    -> Pablo Martn
+    -> Martn Sebastia
+    -> zalo Agustn
+
+  Carácter: 'Ê'
+    -> TainÊ
+    -> JosÊ  Alberto
+    -> DYÊGO
+
+  Carácter: '¨'
+    -> ¨clara Marl
+    -> ¨matias Seb
+    -> Maria¨ Andrea
+
+  Carácter: 'å'
+    -> Håvard
+
+  Carácter: 'Ё'
+    -> Florent NoЁl Martin J
+
+  Carácter: 'ỹ'
+    -> Jeremy Aỹa
+    -> ristian Paỹetebaic
+
+  Carácter: '\x90'
+    -> lida Gabri
+    -> rica Mabel
+    -> Elida Anabe
+
+  Carácter: 'ÿ'
+    -> Yacÿ Anahi
+
+  Carácter: '\xad'
+    -> onel Mauro­
+    -> stanza Mal­ú
+    -> Nicol­Às Alejand
+
+  Carácter: 'Ϊ'
+    -> LOΪC MANEA LA
+
+  Carácter: '·'
+    -> Diego ·ezequiel
+
+  Carácter: '\x87'
+    -> aria Belen
+
+  Carácter: 'ύ'
+    -> Raύl Damián
+
+  Carácter: 'ć'
+    -> Sharik Aarćn
+
+  Carácter: 'ẽ'
+    -> Brisa Yrasẽ
+
+  Carácter: '¿'
+    -> Alejandro¿
+
+  Carácter: 'õ'
+    -> Joaõ Joaquin
+    -> Joaõ Gabriel
+
+  Carácter: '\x9a'
+    -> Duan Ismael
+
+  Carácter: 'Û'
+    -> NegÛen Santiag
+
+  Carácter: 'Ŷ'
+    -> LlŶr Alexande
+
+  Carácter: 'ϋ'
+    -> Kelϋ Kuyen
+
+  Carácter: 'Å'
+    -> Åmbar Elian
