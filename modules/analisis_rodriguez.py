@@ -2,21 +2,16 @@
 # Proyecto Portfolio Analista de Datos
 
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from bokeh.plotting import figure, show, output_file, save
-from bokeh.io import output_notebook, show
-from bokeh.models import (GeoJSONDataSource, LinearColorMapper, ColorBar, 
-                         HoverTool, ColumnDataSource, Span, Label,
-                         LabelSet, Legend, Range1d)
-from bokeh.palettes import Viridis256, Category20c
+from bokeh.plotting import figure, output_file, save
+from bokeh.models import (HoverTool, ColumnDataSource, Span, Label,
+                         LabelSet, ColorBar, LinearColorMapper)
 from bokeh.layouts import column, row, gridplot
-from bokeh.transform import factor_cmap
-import geopandas as gpd
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures
+from bokeh.transform import factor_cmap, transform, linear_cmap
+from bokeh.palettes import Viridis256
 import warnings
 import os
+import geopandas as gpd
+from bokeh.io import export_png
 warnings.filterwarnings('ignore')
 
 # Verificar y crear el directorio
@@ -53,6 +48,22 @@ if len(rodriguez_ranking_provincias) == 0:
 joaquin_historico = historico_nombres[historico_nombres['nombre'].str.lower() == 'joaquin']
 if len(joaquin_historico) == 0:
     joaquin_historico = historico_nombres[historico_nombres['nombre'].str.lower() == 'joaquín']
+
+# Imprimir las columnas de joaquin_historico para verificar
+print("Columnas de joaquin_historico:", joaquin_historico.columns)
+
+# Asegúrate de que la columna 'provincia_nombre' existe
+if 'provincia_nombre' in joaquin_historico.columns:
+    # Crear un DataFrame que contenga la cantidad de Joaquín por provincia
+    joaquin_por_provincia = joaquin_historico.groupby('provincia_nombre')['cantidad'].sum().reset_index()
+    joaquin_por_provincia.rename(columns={'cantidad': 'cantidad_joaquin'}, inplace=True)
+else:
+    print("Error: 'provincia_nombre' no se encuentra en joaquin_historico.")
+    # Aquí puedes manejar el error como desees, por ejemplo, asignar un DataFrame vacío o lanzar una excepción.
+    joaquin_por_provincia = pd.DataFrame(columns=['provincia_nombre', 'cantidad_joaquin'])
+
+# Ahora, combinamos este DataFrame con rodriguez_provincias
+rodriguez_provincias = rodriguez_provincias.merge(joaquin_por_provincia, on='provincia_nombre', how='left')
 
 # Ordenar datos históricos por año
 if 'anio' in joaquin_historico.columns:
@@ -571,7 +582,11 @@ def analizar_generaciones():
 # 10. Unicidad de la combinación Joaquín Rodríguez
 # --------------------------------------
 
+# Variable global para almacenar la estimación
+estimacion_joaquin_rodriguez = 0
+
 def estimar_unicidad_combinacion():
+    global estimacion_joaquin_rodriguez  # Hacer que la variable sea global
     print("\n10. Estimando unicidad de la combinación Joaquín Rodríguez...")
     
     if len(rodriguez_pais) == 0 or len(joaquin_historico) == 0:
@@ -652,6 +667,156 @@ def estimar_unicidad_combinacion():
     # Retornar un resumen de la estimación
     return f"Se estima que hay aproximadamente {estimacion_joaquin_rodriguez:.0f} personas llamadas Joaquín Rodríguez en Argentina."
 
+def crear_mapa_calor():
+    print("\nCreando mapa de calor de la presencia del nombre y apellido...")
+    
+    # Usar la variable global
+    data = {
+        'Combinacion': ['Rodríguez', 'Joaquín', 'Joaquín Rodríguez'],
+        'Presencia': [len(rodriguez_pais), len(joaquin_historico), estimacion_joaquin_rodriguez]
+    }
+    
+    df = pd.DataFrame(data)
+    
+    # Imprimir el DataFrame para verificar los datos
+    print("DataFrame para el mapa de calor:")
+    print(df)
+    
+    # Crear una matriz para el mapa de calor
+    heatmap_data = df.pivot_table(index='Combinacion', values='Presencia')
+    
+    # Imprimir la matriz de calor para verificar
+    print("Matriz de calor:")
+    print(heatmap_data)
+    
+    # Crear el gráfico
+    p = figure(title="Mapa de Calor de Presencia de Nombre y Apellido",
+               x_range=list(heatmap_data.index),  # Cambiar a heatmap_data.index
+               y_range=list(heatmap_data.columns),  # Cambiar a heatmap_data.columns
+               toolbar_location=None,
+               tools="")
+
+    # Crear un mapeo de colores
+    mapper = LinearColorMapper(palette=Viridis256, low=1, high=heatmap_data.values.max())
+    
+    # Añadir los rectángulos del mapa de calor
+    p.rect(x='Combinacion', y='Presencia', width=0.9, height=0.9,
+           source=heatmap_data.reset_index(),  # Asegúrate de que el DataFrame tenga el formato correcto
+           fill_color=transform('Presencia', mapper),
+           line_color=None)
+
+    # Añadir la barra de color
+    color_bar = ColorBar(color_mapper=mapper, location=(0, 0))
+    p.add_layout(color_bar, 'right')
+
+    # Configuración de los ejes
+    p.xaxis.axis_label = "Combinación"
+    p.yaxis.axis_label = "Presencia"
+    p.xaxis.major_label_orientation = "vertical"
+    
+    # Guardar y mostrar
+    output_file("visualizaciones/mapa_calor_presencia.html")
+    save(p)
+    print(f"Mapa de calor guardado en visualizaciones/mapa_calor_presencia.html")
+
+def crear_mapa_geografico():
+    print("\nCreando mapa geográfico de Argentina...")
+    
+    # Cargar el shapefile de las provincias argentinas
+    mapa_argentina = gpd.read_file('shapefiles/gadm41_ARG_1.shp')
+    
+    # Verificar las primeras filas del GeoDataFrame
+    print(mapa_argentina.head())
+    
+    # Verificar las columnas de los DataFrames
+    print("Columnas de rodriguez_provincias:", rodriguez_provincias.columns)
+    
+    # Calcular los porcentajes para cada provincia
+    total_rodriguez = len(rodriguez_provincias)
+    total_combinacion = estimacion_joaquin_rodriguez
+    
+    # Crear un DataFrame para los porcentajes
+    provincias = mapa_argentina['NAME_1']
+    porcentajes_rodriguez = []
+    porcentajes_joaquin = []
+    porcentajes_combinacion = []
+    
+    # Calcular el total de "Joaquín" en todas las provincias
+    total_joaquin = joaquin_historico['cantidad'].sum()  # Total de "Joaquín" en todo el país
+    
+    for provincia in provincias:
+        cantidad_rodriguez = rodriguez_provincias[rodriguez_provincias['provincia_nombre'] == provincia]['cantidad'].sum()
+        
+        # Obtener la cantidad de Joaquín en la provincia
+        cantidad_joaquin = joaquin_historico[joaquin_historico['nombre'].str.lower() == 'joaquin']['cantidad'].sum()  # Asumiendo que hay una columna 'cantidad' en joaquin_historico
+        
+        # Calcular porcentajes
+        porcentaje_rodriguez = (cantidad_rodriguez / total_rodriguez) * 100 if total_rodriguez > 0 else 0
+        porcentaje_joaquin = (cantidad_joaquin / total_joaquin) * 100 if total_joaquin > 0 else 0
+        porcentaje_combinacion = (cantidad_rodriguez * cantidad_joaquin / total_combinacion) * 100 if total_combinacion > 0 else 0
+        
+        porcentajes_rodriguez.append(porcentaje_rodriguez)
+        porcentajes_joaquin.append(porcentaje_joaquin)
+        porcentajes_combinacion.append(porcentaje_combinacion)
+    
+    # Después de calcular los porcentajes, imprime los datos
+    print("Porcentajes Rodríguez:", porcentajes_rodriguez)
+    print("Porcentajes Joaquín:", porcentajes_joaquin)
+    print("Porcentajes Combinación:", porcentajes_combinacion)
+    
+    # Verificar los valores mínimos y máximos para el mapeo de colores
+    print("Rango de porcentajes Rodríguez:", min(porcentajes_rodriguez), max(porcentajes_rodriguez))
+    
+    # Agregar los porcentajes al GeoDataFrame
+    mapa_argentina['porcentaje_rodriguez'] = porcentajes_rodriguez
+    mapa_argentina['porcentaje_joaquin'] = porcentajes_joaquin
+    mapa_argentina['porcentaje_combinacion'] = porcentajes_combinacion
+    
+    # Convertir geometrías a un formato que Bokeh pueda manejar
+    mapa_argentina['geometry'] = mapa_argentina['geometry'].apply(lambda geom: geom.__geo_interface__)
+    
+    # Crear un ColumnDataSource para Bokeh
+    source = ColumnDataSource(mapa_argentina)
+
+    # Imprimir el contenido del ColumnDataSource
+    print("Datos del ColumnDataSource:", source.data)
+    
+    # Crear el mapa
+    p = figure(title="Mapa de Presencia de Rodríguez y Joaquín en Argentina",
+               toolbar_location="right", tools="pan,wheel_zoom,box_zoom,reset,hover")
+    
+    # Mapa de colores
+    mapper = linear_cmap('porcentaje_rodriguez', Viridis256, low=min(porcentajes_rodriguez), high=max(porcentajes_rodriguez))
+    
+    # Dibujar el mapa
+    p.patches('geometry', source=source, fill_color=mapper, line_color="black", line_width=0.5)
+    
+    # Añadir la barra de color
+    color_bar = ColorBar(color_mapper=mapper['transform'], location=(0, 0))
+    p.add_layout(color_bar, 'right')
+    
+    # Configuración de la herramienta de hover
+    hover = HoverTool()
+    hover.tooltips = [
+        ("Provincia", "@NAME_1"),
+        ("% Rodríguez", "@porcentaje_rodriguez{0.2f}"),
+        ("% Joaquín", "@porcentaje_joaquin{0.2f}"),
+        ("% Combinación", "@porcentaje_combinacion{0.2f}")
+    ]
+    p.add_tools(hover)
+    
+    # Guardar y mostrar
+    output_file("visualizaciones/mapa_geografico_presencia.html")
+    save(p)
+    print(f"Mapa geográfico guardado en visualizaciones/mapa_geografico_presencia.html")
+
+    # Después de crear el gráfico 'p'
+    export_png(p, filename="visualizaciones/mapa_geografico_presencia.png")
+
+    if all(p == 0 for p in porcentajes_rodriguez):
+        print("Todos los porcentajes de Rodríguez son cero. Verifica los datos.")
+        return
+
 # Llamadas a las funciones
 print(analizar_posicionamiento_nacional())
 print(crear_mapa_distribucion())
@@ -660,4 +825,6 @@ print(analizar_cordoba())
 print(analizar_evolucion_historica())
 print(identificar_picos_popularidad())
 print(analizar_generaciones())
-print(estimar_unicidad_combinacion())  
+print(estimar_unicidad_combinacion())
+print(crear_mapa_calor())
+print(crear_mapa_geografico())
