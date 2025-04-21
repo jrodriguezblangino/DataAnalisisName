@@ -12,12 +12,17 @@ from bokeh.models import (GeoJSONDataSource, LinearColorMapper, ColorBar,
 from bokeh.palettes import Viridis256, Category20c
 from bokeh.layouts import column, row, gridplot
 from bokeh.transform import factor_cmap
-#from scipy import stats
 import geopandas as gpd
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 import warnings
+import os
 warnings.filterwarnings('ignore')
+
+# Verificar y crear el directorio
+if not os.path.exists("visualizaciones"):
+    os.makedirs("visualizaciones")
+    print("Directorio 'visualizaciones' creado.")
 
 # Cargar datos limpios
 print("Cargando datos limpios...")
@@ -37,6 +42,8 @@ if len(rodriguez_pais) == 0:
 rodriguez_provincias = apellidos_provincia[apellidos_provincia['apellido'].str.lower() == 'rodriguez']
 if len(rodriguez_provincias) == 0:
     rodriguez_provincias = apellidos_provincia[apellidos_provincia['apellido'].str.lower() == 'rodríguez']
+
+rodriguez_provincias = rodriguez_provincias.groupby('provincia_nombre').agg({'cantidad': 'sum'}).reset_index()
 
 rodriguez_ranking_provincias = apellidos_provincia_ranking[apellidos_provincia_ranking['apellido'].str.lower() == 'rodriguez']
 if len(rodriguez_ranking_provincias) == 0:
@@ -75,24 +82,26 @@ def analizar_posicionamiento_nacional():
     # Crear visualización Bokeh
     top_apellidos = apellidos_pais.sort_values('ranking').head(20)
     
+    # Crear colores para destacar Rodríguez
+    colors = ['#C70039' if apellido.lower() in ['rodriguez', 'rodríguez'] else '#1F77B4' 
+              for apellido in top_apellidos['apellido']]
+    
+    # Agregar colores al ColumnDataSource
+    top_apellidos['color'] = colors
     source = ColumnDataSource(top_apellidos)
     
     p = figure(y_range=top_apellidos['apellido'], width=800, height=500,
               title="Top 20 Apellidos más Comunes en Argentina",
               toolbar_location="right")
     
-    # Crear colores para destacar Rodríguez
-    colors = ['#C70039' if apellido.lower() in ['rodriguez', 'rodríguez'] else '#1F77B4' 
-              for apellido in top_apellidos['apellido']]
-    
     # Crear barras
     bars = p.hbar(y='apellido', right='porcentaje_de_poblacion_portadora', 
-                 source=source, height=0.8, color=colors)
+                 source=source, height=0.8, color='color')  # Usar la columna 'color'
     
     # Añadir etiquetas de porcentaje
     labels = LabelSet(x='porcentaje_de_poblacion_portadora', y='apellido', 
                      text='porcentaje_de_poblacion_portadora', level='glyph',
-                     x_offset=5, y_offset=0, source=source, render_mode='canvas',
+                     x_offset=5, y_offset=0, source=source, 
                      text_font_size='8pt')
     
     p.add_layout(labels)
@@ -113,6 +122,7 @@ def analizar_posicionamiento_nacional():
     # Guardar y mostrar
     output_file("visualizaciones/rodriguez_ranking_nacional.html")
     save(p)
+    print(f"Gráfico guardado en visualizaciones/rodriguez_ranking_nacional.html")
     
     return f"El apellido Rodríguez ocupa el puesto {ranking} a nivel nacional, " \
            f"siendo portado por aproximadamente el {porcentaje}% de la población argentina."
@@ -128,8 +138,8 @@ def crear_mapa_distribucion():
         print("No se encontraron datos provinciales del apellido Rodríguez")
         return "No hay datos suficientes para el análisis de distribución geográfica"
     
-    # Como alternativa al mapa geográfico, crear un gráfico de barras por provincia
-    provincias_ordenadas = rodriguez_provincias.sort_values('cantidad', ascending=False)
+    # Agrupar y eliminar duplicados
+    provincias_ordenadas = rodriguez_provincias.drop_duplicates(subset='provincia_nombre').sort_values('cantidad', ascending=False)
     
     source = ColumnDataSource(provincias_ordenadas)
     
@@ -159,9 +169,10 @@ def crear_mapa_distribucion():
     # Guardar y mostrar
     output_file("visualizaciones/rodriguez_distribucion_geografica.html")
     save(p)
+    print(f"Gráfico guardado en visualizaciones/rodriguez_distribucion_geografica.html")
     
     # Calcular información adicional
-    total_personas = rodriguez_provincias['cantidad'].sum()
+    total_personas = provincias_ordenadas['cantidad'].sum()
     max_provincia = provincias_ordenadas.iloc[0]['provincia_nombre']
     max_cantidad = provincias_ordenadas.iloc[0]['cantidad']
     
@@ -190,6 +201,10 @@ def comparar_provincias():
     combined = pd.concat([top5, bottom5])
     combined = combined.sort_values('cantidad', ascending=True)
     
+    # Crear colores para las barras
+    colores = ['#FF7F0E'] * 5 + ['#1F77B4'] * 5
+    combined['color'] = colores  # Agregar la columna de colores
+    
     # Crear gráfico
     source = ColumnDataSource(combined)
     
@@ -197,10 +212,9 @@ def comparar_provincias():
               title="Provincias con Mayor y Menor Presencia del Apellido Rodríguez",
               toolbar_location="right")
     
-    # Colorear diferente top y bottom
-    colores = ['#FF7F0E'] * 5 + ['#1F77B4'] * 5
-    p.hbar(y='provincia_nombre', right='cantidad', height=0.8, 
-          source=source, color=colores)
+    # Crear barras
+    bars = p.hbar(y='provincia_nombre', right='cantidad', height=0.8, 
+                  source=source, color='color')  # Usar la columna 'color'
     
     # Añadir etiquetas
     labels = LabelSet(x='cantidad', y='provincia_nombre', text='cantidad', 
@@ -222,6 +236,7 @@ def comparar_provincias():
     # Guardar y mostrar
     output_file("visualizaciones/rodriguez_comparativa_provincias.html")
     save(p)
+    print(f"Gráfico guardado en visualizaciones/rodriguez_comparativa_provincias.html")
     
     # Calcular algunos datos interesantes
     provincia_max = top5.iloc[0]['provincia_nombre']
@@ -272,9 +287,12 @@ def analizar_cordoba():
     ratio = cantidad_cordoba / promedio_nacional
     
     # Crear visualización comparativa
-    provincias = rodriguez_provincias.copy()
+    provincias = rodriguez_provincias.drop_duplicates(subset='provincia_nombre').copy()
     provincias['es_cordoba'] = provincias['provincia_nombre'].str.lower().isin(['córdoba', 'cordoba'])
     provincias = provincias.sort_values('cantidad', ascending=False)
+    
+    # Crear colores para las barras
+    provincias['color'] = ['#FF5733' if es_cordoba else '#1F77B4' for es_cordoba in provincias['es_cordoba']]
     
     source = ColumnDataSource(provincias)
     
@@ -283,11 +301,9 @@ def analizar_cordoba():
                toolbar_location="right", x_axis_label="Provincia", 
                y_axis_label="Cantidad de personas")
     
-    # Colorear Córdoba diferente
-    colors = ['#FF5733' if es_cordoba else '#1F77B4' for es_cordoba in provincias['es_cordoba']]
-    
+    # Usar la columna de colores
     p.vbar(x='provincia_nombre', top='cantidad', width=0.8, source=source, 
-          fill_color=colors, line_color='white')
+          fill_color='color', line_color='white')
     
     # Rotar etiquetas del eje X
     p.xaxis.major_label_orientation = 3.14/4
@@ -315,6 +331,7 @@ def analizar_cordoba():
     # Guardar y mostrar
     output_file("visualizaciones/rodriguez_analisis_cordoba.html")
     save(p)
+    print(f"Gráfico guardado en visualizaciones/rodriguez_analisis_cordoba.html")
     
     return f"En Córdoba hay {cantidad_cordoba} personas con el apellido Rodríguez. "\
            f"Esto es {ratio:.2f} veces el promedio nacional de {promedio_nacional:.0f} personas por provincia. "\
@@ -364,6 +381,7 @@ def analizar_evolucion_historica():
     # Guardar y mostrar
     output_file("visualizaciones/joaquin_evolucion_historica.html")
     save(p)
+    print(f"Gráfico guardado en visualizaciones/joaquin_evolucion_historica.html")
     
     # Calcular algunos insights
     anio_min = joaquin_por_anio['anio'].min()
@@ -443,6 +461,7 @@ def identificar_picos_popularidad():
     # Guardar y mostrar
     output_file("visualizaciones/joaquin_picos_popularidad.html")
     save(p)
+    print(f"Gráfico guardado en visualizaciones/joaquin_picos_popularidad.html")
     
     # Generar insights
     if len(picos) > 0:
@@ -539,6 +558,7 @@ def analizar_generaciones():
     # Guardar y mostrar
     output_file("visualizaciones/joaquin_analisis_generacional.html")
     save(p)
+    print(f"Gráfico guardado en visualizaciones/joaquin_analisis_generacional.html")
     
     # Generar insights
     gen_popular = df_generaciones.loc[df_generaciones['promedio_anual'].idxmax(), 'generacion']
@@ -562,7 +582,6 @@ def estimar_unicidad_combinacion():
     porcentaje_rodriguez = rodriguez_pais['porcentaje_de_poblacion_portadora'].values[0] / 100
     
     # Estimar la frecuencia del nombre Joaquín
-    # Usando los datos históricos más recientes disponibles
     ultimo_periodo = joaquin_historico.loc[joaquin_historico['anio'].idxmax()]
     anio_reciente = ultimo_periodo['anio']
     
@@ -575,15 +594,9 @@ def estimar_unicidad_combinacion():
         if total_nacimientos_periodo > 0:
             porcentaje_joaquin = nacimientos_joaquin_periodo / total_nacimientos_periodo
         else:
-            # Si no hay datos del periodo, usar el promedio histórico
-            total_historico = historico_nombres['cantidad'].sum()
-            total_joaquin = joaquin_historico['cantidad'].sum()
-            porcentaje_joaquin = total_joaquin / total_historico
+            porcentaje_joaquin = 0  # Asegurarse de que no sea cero
     else:
-        # Si no hay columna de año, usar totales históricos
-        total_historico = historico_nombres['cantidad'].sum()
-        total_joaquin = joaquin_historico['cantidad'].sum()
-        porcentaje_joaquin = total_joaquin / total_historico
+        porcentaje_joaquin = 0  # Asegurarse de que no sea cero
     
     # Estimar población total de Argentina (aproximadamente 45 millones)
     poblacion_argentina = 45000000
@@ -598,18 +611,29 @@ def estimar_unicidad_combinacion():
     labels = ['Apellido Rodríguez', 'Nombre Joaquín', 'Joaquín Rodríguez']
     valores = [personas_rodriguez, poblacion_argentina * porcentaje_joaquin, estimacion_joaquin_rodriguez]
     
-    source = ColumnDataSource(data=dict(labels=labels, valores=valores))
+    # Verificar valores
+    print(f"Valores para el gráfico: {valores}")
+    
+    # Asegurarse de que todos los valores sean mayores que cero
+    if any(v <= 0 for v in valores):
+        print("Error: Uno o más valores son cero o negativos. Ajustando a 1 para la visualización.")
+        valores = [max(v, 1) for v in valores]  # Ajustar a 1 para evitar problemas con la escala logarítmica
+    
+    # Crear colores para las barras
+    colores = ["#1F77B4", "#FF7F0E", "#2CA02C"]
+    
+    source = ColumnDataSource(data=dict(labels=labels, valores=valores, colores=colores))
     
     p = figure(x_range=labels, width=600, height=500,
                title="Estimación de Personas con el Nombre y Apellido",
-               toolbar_location="right", y_axis_type="log")
+               toolbar_location="right")  # Cambiar a escala lineal
     
     p.vbar(x='labels', top='valores', width=0.6, source=source,
-           color=["#1F77B4", "#FF7F0E", "#2CA02C"])
+           color='colores')  # Usar la columna de colores
     
-    p.y_range.start = 1  # Comenzar desde 1 en escala logarítmica
+    p.y_range.start = 1  # Comenzar desde 1 en escala lineal
     p.xgrid.grid_line_color = None
-    p.yaxis.axis_label = "Estimación de Personas (escala logarítmica)"
+    p.yaxis.axis_label = "Estimación de Personas"
     p.xaxis.major_label_orientation = 3.14/4
     
     # Información interactiva
@@ -618,4 +642,22 @@ def estimar_unicidad_combinacion():
         ("Categoría", "@labels"),
         ("Estimación", "@valores{0,0}")
     ]
-  
+    p.add_tools(hover)
+    
+    # Guardar y mostrar
+    output_file("visualizaciones/joaquin_unicidad_combinacion.html")
+    save(p)
+    print(f"Gráfico guardado en visualizaciones/joaquin_unicidad_combinacion.html")
+    
+    # Retornar un resumen de la estimación
+    return f"Se estima que hay aproximadamente {estimacion_joaquin_rodriguez:.0f} personas llamadas Joaquín Rodríguez en Argentina."
+
+# Llamadas a las funciones
+print(analizar_posicionamiento_nacional())
+print(crear_mapa_distribucion())
+print(comparar_provincias())
+print(analizar_cordoba())
+print(analizar_evolucion_historica())
+print(identificar_picos_popularidad())
+print(analizar_generaciones())
+print(estimar_unicidad_combinacion())  
