@@ -1,5 +1,3 @@
-# Joaquín Rodríguez: Análisis de Datos en Argentina
-# Proyecto Portfolio Analista de Datos
 
 import pandas as pd
 from bokeh.plotting import figure, output_file, save
@@ -100,12 +98,31 @@ def analizar_posicionamiento_nacional():
     
     # Agregar colores al ColumnDataSource
     top_apellidos['color'] = colors
+
+    # Redondear los porcentajes a dos decimales
+    top_apellidos['porcentaje_de_poblacion_portadora'] = top_apellidos['porcentaje_de_poblacion_portadora'].round(2)
+
     source = ColumnDataSource(top_apellidos)
     
-    p = figure(y_range=top_apellidos['apellido'], width=800, height=500,
-              title="Top 20 Apellidos más Comunes en Argentina",
-              toolbar_location="right")
+    p = figure(y_range=top_apellidos['apellido'], width=1200, height=800,  # Restaurar tamaño fijo
+              title="Top 20 Apellidos + Comunes en Argentina",
+              toolbar_location="right", sizing_mode="fixed")  # Cambiar a fixed para tamaño fijo
     
+    # Configurar el título
+    p.title.text_font_size = "18pt"  # Aumentar tamaño del título
+    p.title.align = "center"        # Centrar el título en el eje X
+    p.title.border_line_dash_offset = 10         # Separar el título del gráfico
+
+    # Calcular el rango del eje X con un margen adicional
+    max_porcentaje = top_apellidos['porcentaje_de_poblacion_portadora'].max()
+    p.x_range.end = max_porcentaje * 1.1  # Agregar un 10% de margen al rango máximo
+
+    # Ajustar el rango del eje Y para agregar un margen superior
+    p.y_range.range_padding = 0.1  # Agregar un 10% de margen superior
+
+    # Aumentar el tamaño de los apellidos en el eje Y
+    p.yaxis.major_label_text_font_size = "14pt"
+
     # Crear barras
     bars = p.hbar(y='apellido', right='porcentaje_de_poblacion_portadora', 
                  source=source, height=0.8, color='color')  # Usar la columna 'color'
@@ -113,13 +130,17 @@ def analizar_posicionamiento_nacional():
     # Añadir etiquetas de porcentaje
     labels = LabelSet(x='porcentaje_de_poblacion_portadora', y='apellido', 
                      text='porcentaje_de_poblacion_portadora', level='glyph',
-                     x_offset=5, y_offset=0, source=source, 
-                     text_font_size='8pt')
+                     x_offset=10,  # Separar un poco más las etiquetas horizontalmente
+                     y_offset=-5,  # Centrar verticalmente las etiquetas con las barras
+                     source=source, 
+                     text_font_size='14pt')  # Aumentar tamaño de los apellidos
     
     p.add_layout(labels)
     
     # Configuración del gráfico
     p.xaxis.axis_label = "Porcentaje de la Población (%)"
+    p.xaxis.axis_label_text_font_size = "15pt"  # Aumentar levemente el tamaño del texto del eje X
+    p.xaxis.major_label_text_font_size = "13pt"  # Aumentar el tamaño de los números de los marcadores del eje X
     p.xgrid.grid_line_color = None
     
     # Añadir información interactiva
