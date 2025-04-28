@@ -161,7 +161,7 @@ def analizar_posicionamiento_nacional():
            f"siendo portado por aproximadamente el {porcentaje}% de la población argentina."
 
 # --------------------------------------
-# 2. Distribución geográfica del apellido Rodríguez
+# 2. Distribución geográfica del apellido Rodríguez 
 # --------------------------------------
 
 def crear_mapa_distribucion():
