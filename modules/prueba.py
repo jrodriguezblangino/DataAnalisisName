@@ -89,6 +89,9 @@ def crear_mapa_distribucion():
     # Agrupar y eliminar duplicados
     provincias_ordenadas = rodriguez_provincias.drop_duplicates(subset='provincia_nombre').sort_values('cantidad', ascending=False)
     
+    # Crear una nueva columna de colores alternados
+    provincias_ordenadas['color'] = ["#1F77B4" if i % 2 == 0 else "#FF7F0E" for i in range(len(provincias_ordenadas))]
+    
     source = ColumnDataSource(provincias_ordenadas)
     
     # Crear gráfico de barras con un tamaño mayor
@@ -99,10 +102,9 @@ def crear_mapa_distribucion():
                x_axis_label="Provincia", 
                y_axis_label="Cantidad de personas")
     
-    # Crear barras con colores intercalados
-    colors = ["#1F77B4", "#FF7F0E"]  # Dos colores
+    # Crear barras usando la nueva columna de colores
     p.vbar(x='provincia_nombre', top='cantidad', width=0.8, source=source,
-           color=[colors[i % 2] for i in range(len(provincias_ordenadas))])  # Alternar colores
+           fill_color='color')  # Referenciar la columna de colores
     
     # Configuración del gráfico
     p.xaxis.major_label_orientation = 3.14/4  # Rotar etiquetas del eje X
