@@ -90,7 +90,7 @@ def crear_mapa_distribucion():
     provincias_ordenadas = rodriguez_provincias.drop_duplicates(subset='provincia_nombre').sort_values('cantidad', ascending=False)
     
     # Crear una nueva columna de colores alternados
-    provincias_ordenadas['color'] = ["#1F77B4" if i % 2 == 0 else "#FF7F0E" for i in range(len(provincias_ordenadas))]
+    provincias_ordenadas['color'] = ["#C70039" if i % 2 == 0 else "#1F77B4" for i in range(len(provincias_ordenadas))]
     
     # Crear una nueva columna para la cantidad en miles
     provincias_ordenadas['cantidad_miles'] = provincias_ordenadas['cantidad'] / 1000
@@ -107,6 +107,7 @@ def crear_mapa_distribucion():
     # Ajustar el tamaño de la fuente del título
     p.title.text_font_size = "20pt"  # Aumentar tamaño del título
     p.title.standoff = 20  # Aumentar padding inferior del título
+    p.title.align = "center"  # Centrar el título
     
     # Ajustar títulos de los ejes
     p.xaxis.axis_label = "Provincia"
