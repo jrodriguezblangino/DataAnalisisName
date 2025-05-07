@@ -160,8 +160,9 @@ def analizar_posicionamiento_nacional():
     return f"El apellido Rodríguez ocupa el puesto {ranking} a nivel nacional, " \
            f"siendo portado por aproximadamente el {porcentaje}% de la población argentina."
 
+
 # --------------------------------------
-# 2. Distribución geográfica del apellido Rodríguez 
+# 2. Distribución geográfica del apellido Rodríguez
 # --------------------------------------
 
 def crear_mapa_distribucion():
@@ -174,22 +175,43 @@ def crear_mapa_distribucion():
     # Agrupar y eliminar duplicados
     provincias_ordenadas = rodriguez_provincias.drop_duplicates(subset='provincia_nombre').sort_values('cantidad', ascending=False)
     
+    # Crear una nueva columna de colores alternados
+    provincias_ordenadas['color'] = ["#C70039" if i % 2 == 0 else "#1F77B4" for i in range(len(provincias_ordenadas))]
+    
+    # Crear una nueva columna para la cantidad en miles
+    provincias_ordenadas['cantidad_miles'] = provincias_ordenadas['cantidad'] / 1000
+    
     source = ColumnDataSource(provincias_ordenadas)
     
-    # Crear gráfico de barras
+    # Crear gráfico de barras con un tamaño mayor
     p = figure(x_range=provincias_ordenadas['provincia_nombre'], 
-               width=900, height=500,
+               width=1200, height=600,  # Aumentar el tamaño del gráfico
                title="Distribución del Apellido Rodríguez por Provincia",
                toolbar_location="right",
-               x_axis_label="Provincia", 
-               y_axis_label="Cantidad de personas")
+               title_location="above")  # Ubicación del título
     
-    # Crear barras
-    p.vbar(x='provincia_nombre', top='cantidad', width=0.8, source=source,
-           color="#1F77B4")
+    # Ajustar el tamaño de la fuente del título
+    p.title.text_font_size = "20pt"  # Aumentar tamaño del título
+    p.title.standoff = 20  # Aumentar padding inferior del título
+    p.title.align = "center"  # Centrar el título
+    
+    # Ajustar títulos de los ejes
+    p.xaxis.axis_label = "Provincia"
+    p.yaxis.axis_label = "Cantidad de personas (en miles)"  # Modificar título del eje Y
+    p.yaxis.axis_label_standoff = 15  # Aumentar padding del título del eje Y
+    p.xaxis.axis_label_text_font_size = "16pt"  # Aumentar tamaño del título del eje X
+    p.yaxis.axis_label_text_font_size = "16pt"  # Aumentar tamaño del título del eje Y
+    
+    # Crear barras usando la nueva columna de colores
+    p.vbar(x='provincia_nombre', top='cantidad_miles', width=0.8, source=source,
+           fill_color='color')  # Referenciar la columna de colores
     
     # Configuración del gráfico
     p.xaxis.major_label_orientation = 3.14/4  # Rotar etiquetas del eje X
+    p.yaxis.formatter.use_scientific = False  # Desactivar notación científica
+    
+    # Eliminar cuadrícula del fondo
+    p.grid.grid_line_color = None
     
     # Añadir información interactiva
     hover = HoverTool()
@@ -205,12 +227,12 @@ def crear_mapa_distribucion():
     print(f"Gráfico guardado en visualizaciones/rodriguez_distribucion_geografica.html")
     
     # Calcular información adicional
-    total_personas = provincias_ordenadas['cantidad'].sum()
+    total_personas = provincias_ordenadas['cantidad'].sum() / 1000  # Total en miles
     max_provincia = provincias_ordenadas.iloc[0]['provincia_nombre']
-    max_cantidad = provincias_ordenadas.iloc[0]['cantidad']
+    max_cantidad = provincias_ordenadas.iloc[0]['cantidad'] / 1000  # Máxima cantidad en miles
     
-    return f"En total hay {total_personas} personas con el apellido Rodríguez en Argentina. " \
-           f"La mayor concentración se encuentra en {max_provincia} con {max_cantidad} personas."
+    return f"En total hay {total_personas} mil personas con el apellido Rodríguez en Argentina. " \
+           f"La mayor concentración se encuentra en {max_provincia} con {max_cantidad} mil personas."
 
 # --------------------------------------
 # 3. Comparativa entre provincias
