@@ -2,7 +2,7 @@
 import pandas as pd
 from bokeh.plotting import figure, output_file, save
 from bokeh.models import (HoverTool, ColumnDataSource, Span, Label,
-                         LabelSet, ColorBar, LinearColorMapper)
+                         LabelSet, ColorBar, LinearColorMapper,NumeralTickFormatter)
 from bokeh.layouts import column, row, gridplot
 from bokeh.transform import factor_cmap, transform, linear_cmap
 from bokeh.palettes import Viridis256
@@ -239,7 +239,7 @@ def crear_mapa_distribucion():
 # --------------------------------------
 
 def comparar_provincias():
-    print("\n3. Comparando presencia del apellido Rodríguez entre provincias...")
+    print("\nComparando presencia del apellido Rodríguez entre provincias...")
     
     if len(rodriguez_provincias) == 0:
         print("No se encontraron datos provinciales del apellido Rodríguez")
@@ -257,7 +257,7 @@ def comparar_provincias():
     combined = combined.sort_values('cantidad', ascending=True)
     
     # Crear colores para las barras
-    colores = ['#FF7F0E'] * 5 + ['#1F77B4'] * 5
+    colores = ['#C70039'] * 5 + ['#1F77B4'] * 5
     combined['color'] = colores  # Agregar la columna de colores
     
     # Crear gráfico
@@ -267,18 +267,29 @@ def comparar_provincias():
               title="Provincias con Mayor y Menor Presencia del Apellido Rodríguez",
               toolbar_location="right")
     
+    # Ajustar el tamaño de la fuente del título
+    p.title.text_font_size = "12pt"  # Aumentar tamaño del título
+    p.title.standoff = 20  # Aumentar padding inferior del título
+    p.title.align = "center"  # Centrar el título
+    
     # Crear barras
     bars = p.hbar(y='provincia_nombre', right='cantidad', height=0.8, 
                   source=source, color='color')  # Usar la columna 'color'
     
+    # Configuración del eje X
+    p.xaxis.axis_label = "Cantidad de personas"
+    p.xaxis.axis_label_text_font_size = "12pt"
+    p.xaxis.axis_label_text_font_style = "bold"
+    p.xaxis.axis_label_standoff = 15
+    p.xgrid.grid_line_color = None
+    
+    # Formatear los números del eje X
+    p.xaxis.formatter = NumeralTickFormatter(format="0,0")
+
     # Añadir etiquetas
     labels = LabelSet(x='cantidad', y='provincia_nombre', text='cantidad', 
                      source=source, x_offset=5, text_font_size='8pt')
     p.add_layout(labels)
-    
-    # Configuración
-    p.xaxis.axis_label = "Cantidad de personas"
-    p.xgrid.grid_line_color = None
     
     # Información interactiva
     hover = HoverTool()
@@ -289,9 +300,9 @@ def comparar_provincias():
     p.add_tools(hover)
     
     # Guardar y mostrar
-    output_file("visualizaciones/rodriguez_comparativa_provincias.html")
+    output_file("visualizaciones/rodriguez_comparativa_provincias_prueba.html")
     save(p)
-    print(f"Gráfico guardado en visualizaciones/rodriguez_comparativa_provincias.html")
+    print(f"Gráfico guardado en visualizaciones/rodriguez_comparativa_provincias_prueba.html")
     
     # Calcular algunos datos interesantes
     provincia_max = top5.iloc[0]['provincia_nombre']

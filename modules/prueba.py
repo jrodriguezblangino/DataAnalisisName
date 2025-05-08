@@ -1,7 +1,7 @@
 import pandas as pd
 from bokeh.plotting import figure, output_file, save
 from bokeh.models import (HoverTool, ColumnDataSource, Span, Label,
-                         LabelSet, ColorBar, LinearColorMapper)
+                         LabelSet, ColorBar, LinearColorMapper, NumeralTickFormatter)
 from bokeh.layouts import column, row, gridplot
 from bokeh.transform import factor_cmap, transform, linear_cmap
 from bokeh.palettes import Viridis256
@@ -75,59 +75,63 @@ print(f"Datos históricos del nombre Joaquín: {len(joaquin_historico)} registro
 
 
 
-# --------------------------------------
-# 2. Distribución geográfica del apellido Rodríguez
+# 3. Comparativa entre provincias
 # --------------------------------------
 
-def crear_mapa_distribucion():
-    print("\n2. Analizando distribución geográfica del apellido Rodríguez...")
+def comparar_provincias():
+    print("\nComparando presencia del apellido Rodríguez entre provincias...")
     
     if len(rodriguez_provincias) == 0:
         print("No se encontraron datos provinciales del apellido Rodríguez")
-        return "No hay datos suficientes para el análisis de distribución geográfica"
+        return "No hay datos suficientes para la comparativa entre provincias"
     
-    # Agrupar y eliminar duplicados
-    provincias_ordenadas = rodriguez_provincias.drop_duplicates(subset='provincia_nombre').sort_values('cantidad', ascending=False)
+    # Ordenar provincias por cantidad
+    top_provincias = rodriguez_provincias.sort_values('cantidad', ascending=False)
     
-    # Crear una nueva columna de colores alternados
-    provincias_ordenadas['color'] = ["#C70039" if i % 2 == 0 else "#1F77B4" for i in range(len(provincias_ordenadas))]
+    # Seleccionar top 5 y bottom 5
+    top5 = top_provincias.head(5)
+    bottom5 = top_provincias.tail(5)
     
-    # Crear una nueva columna para la cantidad en miles
-    provincias_ordenadas['cantidad_miles'] = provincias_ordenadas['cantidad'] / 1000
+    # Combinar para visualización
+    combined = pd.concat([top5, bottom5])
+    combined = combined.sort_values('cantidad', ascending=True)
     
-    source = ColumnDataSource(provincias_ordenadas)
+    # Crear colores para las barras
+    colores = ['#C70039'] * 5 + ['#1F77B4'] * 5
+    combined['color'] = colores  # Agregar la columna de colores
     
-    # Crear gráfico de barras con un tamaño mayor
-    p = figure(x_range=provincias_ordenadas['provincia_nombre'], 
-               width=1200, height=600,  # Aumentar el tamaño del gráfico
-               title="Distribución del Apellido Rodríguez por Provincia",
-               toolbar_location="right",
-               title_location="above")  # Ubicación del título
+    # Crear gráfico
+    source = ColumnDataSource(combined)
+    
+    p = figure(y_range=combined['provincia_nombre'], width=800, height=400,
+              title="Provincias con Mayor y Menor Presencia del Apellido Rodríguez",
+              toolbar_location="right")
     
     # Ajustar el tamaño de la fuente del título
-    p.title.text_font_size = "20pt"  # Aumentar tamaño del título
+    p.title.text_font_size = "12pt"  # Aumentar tamaño del título
     p.title.standoff = 20  # Aumentar padding inferior del título
     p.title.align = "center"  # Centrar el título
     
-    # Ajustar títulos de los ejes
-    p.xaxis.axis_label = "Provincia"
-    p.yaxis.axis_label = "Cantidad de personas (en miles)"  # Modificar título del eje Y
-    p.yaxis.axis_label_standoff = 15  # Aumentar padding del título del eje Y
-    p.xaxis.axis_label_text_font_size = "16pt"  # Aumentar tamaño del título del eje X
-    p.yaxis.axis_label_text_font_size = "16pt"  # Aumentar tamaño del título del eje Y
+    # Crear barras
+    bars = p.hbar(y='provincia_nombre', right='cantidad', height=0.8, 
+                  source=source, color='color')  # Usar la columna 'color'
     
-    # Crear barras usando la nueva columna de colores
-    p.vbar(x='provincia_nombre', top='cantidad_miles', width=0.8, source=source,
-           fill_color='color')  # Referenciar la columna de colores
+    # Configuración del eje X
+    p.xaxis.axis_label = "Cantidad de personas"
+    p.xaxis.axis_label_text_font_size = "12pt"
+    p.xaxis.axis_label_text_font_style = "bold"
+    p.xaxis.axis_label_standoff = 15
+    p.xgrid.grid_line_color = None
     
-    # Configuración del gráfico
-    p.xaxis.major_label_orientation = 3.14/4  # Rotar etiquetas del eje X
-    p.yaxis.formatter.use_scientific = False  # Desactivar notación científica
+    # Formatear los números del eje X
+    p.xaxis.formatter = NumeralTickFormatter(format="0,0")
+
+    # Añadir etiquetas
+    labels = LabelSet(x='cantidad', y='provincia_nombre', text='cantidad', 
+                     source=source, x_offset=5, text_font_size='8pt')
+    p.add_layout(labels)
     
-    # Eliminar cuadrícula del fondo
-    p.grid.grid_line_color = None
-    
-    # Añadir información interactiva
+    # Información interactiva
     hover = HoverTool()
     hover.tooltips = [
         ("Provincia", "@provincia_nombre"),
@@ -136,16 +140,19 @@ def crear_mapa_distribucion():
     p.add_tools(hover)
     
     # Guardar y mostrar
-    output_file("visualizaciones/rodriguez_distribucion_geografica.html")
+    output_file("visualizaciones/rodriguez_comparativa_provincias_prueba.html")
     save(p)
-    print(f"Gráfico guardado en visualizaciones/rodriguez_distribucion_geografica.html")
+    print(f"Gráfico guardado en visualizaciones/rodriguez_comparativa_provincias_prueba.html")
     
-    # Calcular información adicional
-    total_personas = provincias_ordenadas['cantidad'].sum() / 1000  # Total en miles
-    max_provincia = provincias_ordenadas.iloc[0]['provincia_nombre']
-    max_cantidad = provincias_ordenadas.iloc[0]['cantidad'] / 1000  # Máxima cantidad en miles
+    # Calcular algunos datos interesantes
+    provincia_max = top5.iloc[0]['provincia_nombre']
+    cantidad_max = top5.iloc[0]['cantidad']
+    provincia_min = bottom5.iloc[0]['provincia_nombre']
+    cantidad_min = bottom5.iloc[0]['cantidad']
     
-    return f"En total hay {total_personas} mil personas con el apellido Rodríguez en Argentina. " \
-           f"La mayor concentración se encuentra en {max_provincia} con {max_cantidad} mil personas."
+    return f"La provincia con mayor presencia del apellido Rodríguez es {provincia_max} "\
+           f"con {cantidad_max} personas, mientras que la provincia con menor presencia "\
+           f"es {provincia_min} con {cantidad_min} personas."
 
-print(crear_mapa_distribucion())
+# Llama a la función para probar
+comparar_provincias()
