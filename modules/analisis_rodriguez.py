@@ -283,6 +283,10 @@ def comparar_provincias():
     p.xaxis.axis_label_standoff = 15
     p.xgrid.grid_line_color = None
     
+    # Ajustar el rango del eje X para que el cero coincida con el eje Y
+    p.x_range.start = 0  # Asegurarse de que el inicio del eje X sea 0
+    p.x_range.end = combined['cantidad'].max() * 1.1  # Aumentar el rango para dar margen (10% más)
+
     # Formatear los números del eje X
     p.xaxis.formatter = NumeralTickFormatter(format="0,0")
 
