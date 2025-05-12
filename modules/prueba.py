@@ -1,7 +1,8 @@
+
 import pandas as pd
 from bokeh.plotting import figure, output_file, save
 from bokeh.models import (HoverTool, ColumnDataSource, Span, Label,
-                         LabelSet, ColorBar, LinearColorMapper, NumeralTickFormatter)
+                         LabelSet, ColorBar, LinearColorMapper,NumeralTickFormatter)
 from bokeh.layouts import column, row, gridplot
 from bokeh.transform import factor_cmap, transform, linear_cmap
 from bokeh.palettes import Viridis256
@@ -72,9 +73,6 @@ print(f"\nDatos de apellido Rodríguez a nivel país: {len(rodriguez_pais)} regi
 print(f"Datos de apellido Rodríguez por provincia: {len(rodriguez_provincias)} registros")
 print(f"Datos de ranking de Rodríguez por provincia: {len(rodriguez_ranking_provincias)} registros")
 print(f"Datos históricos del nombre Joaquín: {len(joaquin_historico)} registros")
-
-# Imprimir los datos de rodriguez_provincias para verificar
-print(rodriguez_provincias)
 
 # --------------------------------------
 # 4. Análisis específico de Córdoba
@@ -164,3 +162,6 @@ def analizar_cordoba():
     return f"En Córdoba hay {cantidad_cordoba} personas con el apellido Rodríguez. "\
            f"Esto es {ratio:.2f} veces el promedio nacional de {promedio_nacional:.0f} personas por provincia. "\
            f"{ranking_texto}."
+
+
+analizar_cordoba()
