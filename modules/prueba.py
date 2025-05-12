@@ -1,4 +1,3 @@
-
 import pandas as pd
 from bokeh.plotting import figure, output_file, save
 from bokeh.models import (HoverTool, ColumnDataSource, Span, Label,
@@ -118,14 +117,14 @@ def analizar_cordoba():
     provincias = provincias.sort_values('cantidad', ascending=False)
     
     # Crear colores para las barras
-    provincias['color'] = ['#FF5733' if es_cordoba else '#1F77B4' for es_cordoba in provincias['es_cordoba']]
+    provincias['color'] = ['#C70039' if es_cordoba else '#1F77B4' for es_cordoba in provincias['es_cordoba']]
     
     source = ColumnDataSource(provincias)
     
     p = figure(x_range=provincias['provincia_nombre'], width=900, height=500,
                title="Comparativa: Rodríguez en Córdoba vs Otras Provincias",
                toolbar_location="right", x_axis_label="Provincia", 
-               y_axis_label="Cantidad de personas")
+               y_axis_label="Cantidad de personas (en miles)")
     
     # Usar la columna de colores
     p.vbar(x='provincia_nombre', top='cantidad', width=0.8, source=source, 
@@ -137,14 +136,31 @@ def analizar_cordoba():
     # Línea para el promedio nacional
     prom_line = Span(location=promedio_nacional, 
                     dimension='width', line_color='red', 
-                    line_dash='dashed', line_width=2)
+                    line_dash='dashed', line_width=1)
     p.add_layout(prom_line)
     
     # Etiqueta para la línea del promedio
-    label = Label(x=5, y=promedio_nacional+500, 
-                 text=f"Promedio Nacional: {promedio_nacional:.0f}",
-                 text_color='red')
+    label = Label(x=(p.x_range.end + p.x_range.start) / 2, 
+                 y=promedio_nacional + 50, 
+                 text=f"Promedio Nacional: {promedio_nacional / 1000:.0f} mil",
+                 text_color='red', 
+                 background_fill_color='white',
+                 background_fill_alpha=0.7)
     p.add_layout(label)
+    
+    # Configuración del eje Y
+    p.yaxis.formatter.use_scientific = False
+    p.yaxis.axis_label = "Cantidad de personas (en miles)"
+    p.yaxis.axis_label_text_font_size = "15pt"
+    p.yaxis.major_label_text_font_size = "13pt"
+    
+    # Aumentar tamaño del título
+    p.title.text_font_size = "18pt"
+    p.title.align = "center"
+    
+    # Eliminar cuadrícula de fondo
+    p.xgrid.visible = False
+    p.ygrid.visible = False
     
     # Información interactiva
     hover = HoverTool()
