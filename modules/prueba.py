@@ -73,86 +73,94 @@ print(f"Datos de apellido Rodríguez por provincia: {len(rodriguez_provincias)} 
 print(f"Datos de ranking de Rodríguez por provincia: {len(rodriguez_ranking_provincias)} registros")
 print(f"Datos históricos del nombre Joaquín: {len(joaquin_historico)} registros")
 
+# Imprimir los datos de rodriguez_provincias para verificar
+print(rodriguez_provincias)
 
-
-# 3. Comparativa entre provincias
+# --------------------------------------
+# 4. Análisis específico de Córdoba
 # --------------------------------------
 
-def comparar_provincias():
-    print("\nComparando presencia del apellido Rodríguez entre provincias...")
+def analizar_cordoba():
+    print("\n4. Analizando presencia del apellido Rodríguez en Córdoba...")
     
-    if len(rodriguez_provincias) == 0:
-        print("No se encontraron datos provinciales del apellido Rodríguez")
-        return "No hay datos suficientes para la comparativa entre provincias"
+    # Obtener datos de Córdoba
+    cordoba_datos = rodriguez_provincias[rodriguez_provincias['provincia_nombre'].str.lower() == 'córdoba']
+    if len(cordoba_datos) == 0:
+        cordoba_datos = rodriguez_provincias[rodriguez_provincias['provincia_nombre'].str.lower() == 'cordoba']
     
-    # Ordenar provincias por cantidad
-    top_provincias = rodriguez_provincias.sort_values('cantidad', ascending=False)
+    if len(cordoba_datos) == 0:
+        print("No se encontraron datos para Córdoba")
+        return "No se encontraron datos para Córdoba"
     
-    # Seleccionar top 5 y bottom 5
-    top5 = top_provincias.head(5)
-    bottom5 = top_provincias.tail(5)
+    cantidad_cordoba = cordoba_datos['cantidad'].values[0]
     
-    # Combinar para visualización
-    combined = pd.concat([top5, bottom5])
-    combined = combined.sort_values('cantidad', ascending=True)
+    # Obtener ranking en Córdoba
+    cordoba_ranking = rodriguez_ranking_provincias[
+        rodriguez_ranking_provincias['provincia_nombre'].str.lower() == 'córdoba'
+    ]
+    if len(cordoba_ranking) == 0:
+        cordoba_ranking = rodriguez_ranking_provincias[
+            rodriguez_ranking_provincias['provincia_nombre'].str.lower() == 'cordoba'
+        ]
+    
+    if len(cordoba_ranking) == 0:
+        ranking_texto = "No se encontró información de ranking para Córdoba"
+    else:
+        ranking_cordoba = cordoba_ranking['ranking'].values[0]
+        porcentaje_cordoba = cordoba_ranking['porcentaje_poblacion_portadora'].values[0]
+        ranking_texto = f"En Córdoba, Rodríguez ocupa el puesto {ranking_cordoba} con un {porcentaje_cordoba}% de la población"
+    
+    # Comparar con el promedio nacional
+    promedio_nacional = rodriguez_provincias['cantidad'].mean()
+    ratio = cantidad_cordoba / promedio_nacional
+    
+    # Crear visualización comparativa
+    provincias = rodriguez_provincias.drop_duplicates(subset='provincia_nombre').copy()
+    provincias['es_cordoba'] = provincias['provincia_nombre'].str.lower().isin(['córdoba', 'cordoba'])
+    provincias = provincias.sort_values('cantidad', ascending=False)
     
     # Crear colores para las barras
-    colores = ['#C70039'] * 5 + ['#1F77B4'] * 5
-    combined['color'] = colores  # Agregar la columna de colores
+    provincias['color'] = ['#FF5733' if es_cordoba else '#1F77B4' for es_cordoba in provincias['es_cordoba']]
     
-    # Crear gráfico
-    source = ColumnDataSource(combined)
+    source = ColumnDataSource(provincias)
     
-    p = figure(y_range=combined['provincia_nombre'], width=800, height=400,
-              title="Provincias con Mayor y Menor Presencia del Apellido Rodríguez",
-              toolbar_location="right")
+    p = figure(x_range=provincias['provincia_nombre'], width=900, height=500,
+               title="Comparativa: Rodríguez en Córdoba vs Otras Provincias",
+               toolbar_location="right", x_axis_label="Provincia", 
+               y_axis_label="Cantidad de personas")
     
-    # Ajustar el tamaño de la fuente del título
-    p.title.text_font_size = "12pt"  # Aumentar tamaño del título
-    p.title.standoff = 20  # Aumentar padding inferior del título
-    p.title.align = "center"  # Centrar el título
+    # Usar la columna de colores
+    p.vbar(x='provincia_nombre', top='cantidad', width=0.8, source=source, 
+          fill_color='color', line_color='white')
     
-    # Crear barras
-    bars = p.hbar(y='provincia_nombre', right='cantidad', height=0.8, 
-                  source=source, color='color')  # Usar la columna 'color'
+    # Rotar etiquetas del eje X
+    p.xaxis.major_label_orientation = 3.14/4
     
-    # Configuración del eje X
-    p.xaxis.axis_label = "Cantidad de personas"
-    p.xaxis.axis_label_text_font_size = "12pt"
-    p.xaxis.axis_label_text_font_style = "bold"
-    p.xaxis.axis_label_standoff = 15
-    p.xgrid.grid_line_color = None
+    # Línea para el promedio nacional
+    prom_line = Span(location=promedio_nacional, 
+                    dimension='width', line_color='red', 
+                    line_dash='dashed', line_width=2)
+    p.add_layout(prom_line)
     
-    # Formatear los números del eje X
-    p.xaxis.formatter = NumeralTickFormatter(format="0,0")
-
-    # Añadir etiquetas
-    labels = LabelSet(x='cantidad', y='provincia_nombre', text='cantidad', 
-                     source=source, x_offset=5, text_font_size='8pt')
-    p.add_layout(labels)
+    # Etiqueta para la línea del promedio
+    label = Label(x=5, y=promedio_nacional+500, 
+                 text=f"Promedio Nacional: {promedio_nacional:.0f}",
+                 text_color='red')
+    p.add_layout(label)
     
     # Información interactiva
     hover = HoverTool()
     hover.tooltips = [
         ("Provincia", "@provincia_nombre"),
-        ("Cantidad", "@cantidad personas")
+        ("Cantidad", "@cantidad personas"),
     ]
     p.add_tools(hover)
     
     # Guardar y mostrar
-    output_file("visualizaciones/rodriguez_comparativa_provincias_prueba.html")
+    output_file("visualizaciones/rodriguez_analisis_cordoba.html")
     save(p)
-    print(f"Gráfico guardado en visualizaciones/rodriguez_comparativa_provincias_prueba.html")
+    print(f"Gráfico guardado en visualizaciones/rodriguez_analisis_cordoba.html")
     
-    # Calcular algunos datos interesantes
-    provincia_max = top5.iloc[0]['provincia_nombre']
-    cantidad_max = top5.iloc[0]['cantidad']
-    provincia_min = bottom5.iloc[0]['provincia_nombre']
-    cantidad_min = bottom5.iloc[0]['cantidad']
-    
-    return f"La provincia con mayor presencia del apellido Rodríguez es {provincia_max} "\
-           f"con {cantidad_max} personas, mientras que la provincia con menor presencia "\
-           f"es {provincia_min} con {cantidad_min} personas."
-
-# Llama a la función para probar
-comparar_provincias()
+    return f"En Córdoba hay {cantidad_cordoba} personas con el apellido Rodríguez. "\
+           f"Esto es {ratio:.2f} veces el promedio nacional de {promedio_nacional:.0f} personas por provincia. "\
+           f"{ranking_texto}."
