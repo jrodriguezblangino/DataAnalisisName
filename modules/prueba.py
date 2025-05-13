@@ -136,6 +136,7 @@ def analizar_cordoba():
     # Configurar título del eje X para que aparezca más grande y en negrita
     p.xaxis.axis_label_text_font_size = "15pt"
     p.xaxis.axis_label_text_font_style = "bold"
+    p.xaxis.major_label_text_font_size = "10pt"
     
     # Línea para el promedio nacional
     prom_line = Span(location=promedio_nacional, 
@@ -144,14 +145,14 @@ def analizar_cordoba():
     p.add_layout(prom_line)
     
     # Etiqueta para la línea del promedio
-    label = Label(x=p.x_range.end + 1.6,  # Mover el label más a la derecha
+    label = Label(x=p.x_range.end + 8.8,  # Mover el label más a la derecha
                  y=round(promedio_nacional) + 80,  # Aumentar el desplazamiento
                  text=f"Promedio Nacional: {round(promedio_nacional)} personas",  # Redondear
                  text_color='red', 
                  background_fill_color='white',
                  background_fill_alpha=0.7,
                  x_offset=0,  # Ajuste para centrar el texto horizontalmente
-                 y_offset=30  # Aumentar el ajuste para despegar más la etiqueta
+                 y_offset=25  # Aumentar el ajuste para despegar más la etiqueta
                  )
     p.add_layout(label)
     
@@ -160,7 +161,7 @@ def analizar_cordoba():
     p.yaxis.axis_label = "Cantidad de personas (en miles)"  # Ajustar el padding para despegar el etiqueta
     p.yaxis.axis_label_text_font_size = "15pt"
     p.yaxis.axis_label_text_font_style = "bold"
-    p.yaxis.axis_label_standoff = 10  # Añadir un espacio entre el eje y la etiqueta para despegar
+    p.yaxis.axis_label_standoff = 25  # Añadir un espacio entre el eje y la etiqueta para despegar
     p.yaxis.major_label_text_font_size = "13pt"
     
     # Aumentar tamaño del título
