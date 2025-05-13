@@ -121,7 +121,7 @@ def analizar_cordoba():
     
     source = ColumnDataSource(provincias)
     
-    p = figure(x_range=provincias['provincia_nombre'], width=900, height=500,
+    p = figure(x_range=provincias['provincia_nombre'], width=1200, height=800,
                title="Comparativa: Rodríguez en Córdoba vs Otras Provincias",
                toolbar_location="right", x_axis_label="Provincia", 
                y_axis_label="Cantidad de personas (en miles)")
@@ -133,6 +133,10 @@ def analizar_cordoba():
     # Rotar etiquetas del eje X
     p.xaxis.major_label_orientation = 3.14/4
     
+    # Configurar título del eje X para que aparezca más grande y en negrita
+    p.xaxis.axis_label_text_font_size = "15pt"
+    p.xaxis.axis_label_text_font_style = "bold"
+    
     # Línea para el promedio nacional
     prom_line = Span(location=promedio_nacional, 
                     dimension='width', line_color='red', 
@@ -140,17 +144,20 @@ def analizar_cordoba():
     p.add_layout(prom_line)
     
     # Etiqueta para la línea del promedio
-    label = Label(x=(p.x_range.end + p.x_range.start) / 2, 
-                 y=promedio_nacional + 50, 
-                 text=f"Promedio Nacional: {promedio_nacional / 1000:.0f} mil",
+    label = Label(x=p.x_range.end + 0.5,  # Mover el label más a la derecha
+                 y=round(promedio_nacional) + 80,  # Aumentar el desplazamiento
+                 text=f"Promedio Nacional: {round(promedio_nacional)} personas",  # Redondear
                  text_color='red', 
                  background_fill_color='white',
-                 background_fill_alpha=0.7)
+                 background_fill_alpha=0.7,
+                 x_offset=0,  # Ajuste para centrar el texto horizontalmente
+                 y_offset=30  # Aumentar el ajuste para despegar más la etiqueta
+                 )
     p.add_layout(label)
     
     # Configuración del eje Y
     p.yaxis.formatter.use_scientific = False
-    p.yaxis.axis_label = "Cantidad de personas (en miles)"
+    p.yaxis.axis_label = "Cantidad de personas (en miles)  "  # Agregar espacios para despegar
     p.yaxis.axis_label_text_font_size = "15pt"
     p.yaxis.major_label_text_font_size = "13pt"
     
