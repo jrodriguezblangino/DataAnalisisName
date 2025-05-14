@@ -116,7 +116,7 @@ def analizar_evolucion_historica():
     #Ajustar el tamaño y el estilo del eje x
 
     p.xaxis.axis_label_text_font_size = "12pt"
-    p.xyaxis.axis_label_text_font_style = "bold"
+    p.xaxis.axis_label_text_font_style = "bold"
     p.xaxis.axis_label_standoff = 15
    
    
