@@ -127,7 +127,7 @@ def analizar_evolucion_historica():
     
     # Añadir marcadores
     circles = p.circle('anio', 'cantidad', source=source, size=8, 
-                      color='##C70039', fill_alpha=0.4)
+                      color='#C70039', fill_alpha=0.4)
     
     # Agregar información interactiva
     hover = HoverTool(renderers=[circles], tooltips=[
