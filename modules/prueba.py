@@ -77,117 +77,61 @@ print(f"Datos históricos del nombre Joaquín: {len(joaquin_historico)} registro
 # 4. Análisis específico de Córdoba
 # --------------------------------------
 
-def analizar_cordoba():
-    print("\n4. Analizando presencia del apellido Rodríguez en Córdoba...")
+# --------------------------------------
+# 6. Evolución histórica del nombre Joaquín
+# --------------------------------------
+
+def analizar_evolucion_historica():
+    print("\n6. Analizando evolución histórica del nombre Joaquín...")
     
-    # Obtener datos de Córdoba
-    cordoba_datos = rodriguez_provincias[rodriguez_provincias['provincia_nombre'].str.lower() == 'córdoba']
-    if len(cordoba_datos) == 0:
-        cordoba_datos = rodriguez_provincias[rodriguez_provincias['provincia_nombre'].str.lower() == 'cordoba']
+    if len(joaquin_historico) == 0:
+        print("No se encontraron datos históricos del nombre Joaquín")
+        return "No hay datos suficientes para el análisis de evolución histórica"
     
-    if len(cordoba_datos) == 0:
-        print("No se encontraron datos para Córdoba")
-        return "No se encontraron datos para Córdoba"
+    # Agrupar por año y sumar
+    joaquin_por_anio = joaquin_historico.groupby('anio')['cantidad'].sum().reset_index()
     
-    cantidad_cordoba = cordoba_datos['cantidad'].values[0]
+    # Crear gráfico interactivo con Bokeh
+    source = ColumnDataSource(joaquin_por_anio)
     
-    # Obtener ranking en Córdoba
-    cordoba_ranking = rodriguez_ranking_provincias[
-        rodriguez_ranking_provincias['provincia_nombre'].str.lower() == 'córdoba'
-    ]
-    if len(cordoba_ranking) == 0:
-        cordoba_ranking = rodriguez_ranking_provincias[
-            rodriguez_ranking_provincias['provincia_nombre'].str.lower() == 'cordoba'
-        ]
+    p = figure(width=900, height=500, 
+              title="Evolución Histórica del Nombre Joaquín",
+              x_axis_label="Año", y_axis_label="Cantidad de Nacimientos",
+              toolbar_location="right")
     
-    if len(cordoba_ranking) == 0:
-        ranking_texto = "No se encontró información de ranking para Córdoba"
-    else:
-        ranking_cordoba = cordoba_ranking['ranking'].values[0]
-        porcentaje_cordoba = cordoba_ranking['porcentaje_poblacion_portadora'].values[0]
-        ranking_texto = f"En Córdoba, Rodríguez ocupa el puesto {ranking_cordoba} con un {porcentaje_cordoba}% de la población"
+    # Línea de tendencia
+    line = p.line('anio', 'cantidad', source=source, line_width=2, 
+                 line_color='#1F77B4', legend_label="Joaquín")
     
-    # Comparar con el promedio nacional
-    promedio_nacional = rodriguez_provincias['cantidad'].mean()
-    ratio = cantidad_cordoba / promedio_nacional
+    # Añadir marcadores
+    circles = p.circle('anio', 'cantidad', source=source, size=8, 
+                      color='#1F77B4', fill_alpha=0.4)
     
-    # Crear visualización comparativa
-    provincias = rodriguez_provincias.drop_duplicates(subset='provincia_nombre').copy()
-    provincias['es_cordoba'] = provincias['provincia_nombre'].str.lower().isin(['córdoba', 'cordoba'])
-    provincias = provincias.sort_values('cantidad', ascending=False)
-    
-    # Crear colores para las barras
-    provincias['color'] = ['#C70039' if es_cordoba else '#1F77B4' for es_cordoba in provincias['es_cordoba']]
-    
-    source = ColumnDataSource(provincias)
-    
-    p = figure(x_range=provincias['provincia_nombre'], width=1200, height=800,
-               title="Comparativa: Rodríguez en Córdoba vs Otras Provincias",
-               toolbar_location="right", x_axis_label="Provincia", 
-               y_axis_label="Cantidad de personas (en miles)")
-    
-    # Usar la columna de colores
-    p.vbar(x='provincia_nombre', top='cantidad', width=0.8, source=source, 
-          fill_color='color', line_color='white')
-    
-    # Rotar etiquetas del eje X
-    p.xaxis.major_label_orientation = 3.14/4
-    
-    # Configurar título del eje X para que aparezca más grande y en negrita
-    p.xaxis.axis_label_text_font_size = "15pt"
-    p.xaxis.axis_label_text_font_style = "bold"
-    p.xaxis.major_label_text_font_size = "10pt"
-    
-    # Línea para el promedio nacional
-    prom_line = Span(location=promedio_nacional, 
-                    dimension='width', line_color='red', 
-                    line_dash='dashed', line_width=1)
-    p.add_layout(prom_line)
-    
-    # Etiqueta para la línea del promedio
-    label = Label(x=p.x_range.end + 8.8,  # Mover el label más a la derecha
-                 y=round(promedio_nacional) + 80,  # Aumentar el desplazamiento
-                 text=f"Promedio Nacional: {round(promedio_nacional)} personas",  # Redondear
-                 text_color='red', 
-                 background_fill_color='white',
-                 background_fill_alpha=0.7,
-                 x_offset=0,  # Ajuste para centrar el texto horizontalmente
-                 y_offset=25  # Aumentar el ajuste para despegar más la etiqueta
-                 )
-    p.add_layout(label)
-    
-    # Configuración del eje Y
-    p.yaxis.formatter.use_scientific = False
-    p.yaxis.axis_label = "Cantidad de personas (en miles)"  # Ajustar el padding para despegar el etiqueta
-    p.yaxis.axis_label_text_font_size = "15pt"
-    p.yaxis.axis_label_text_font_style = "bold"
-    p.yaxis.axis_label_standoff = 25  # Añadir un espacio entre el eje y la etiqueta para despegar
-    p.yaxis.major_label_text_font_size = "13pt"
-    
-    # Aumentar tamaño del título
-    p.title.text_font_size = "18pt"
-    p.title.align = "center"
-    
-    # Eliminar cuadrícula de fondo
-    p.xgrid.visible = False
-    p.ygrid.visible = False
-    
-    # Información interactiva
-    hover = HoverTool()
-    hover.tooltips = [
-        ("Provincia", "@provincia_nombre"),
-        ("Cantidad", "@cantidad personas"),
-    ]
+    # Agregar información interactiva
+    hover = HoverTool(renderers=[circles], tooltips=[
+        ("Año", "@anio"),
+        ("Nacimientos", "@cantidad")
+    ])
     p.add_tools(hover)
     
-    # Guardar y mostrar
-    output_file("visualizaciones/rodriguez_analisis_cordoba.html")
-    save(p)
-    print(f"Gráfico guardado en visualizaciones/rodriguez_analisis_cordoba.html")
+    # Configuración
+    p.legend.location = "top_left"
+    p.legend.click_policy = "hide"
     
-    return f"En Córdoba hay {cantidad_cordoba} personas con el apellido Rodríguez. "\
-           f"Esto es {ratio:.2f} veces el promedio nacional de {promedio_nacional:.0f} personas por provincia. "\
-           f"{ranking_texto}."
+    # Guardar y mostrar
+    output_file("visualizaciones/joaquin_evolucion_historica.html")
+    save(p)
+    print(f"Gráfico guardado en visualizaciones/joaquin_evolucion_historica.html")
+    
+    # Calcular algunos insights
+    anio_min = joaquin_por_anio['anio'].min()
+    anio_max = joaquin_por_anio['anio'].max()
+    cantidad_min = joaquin_por_anio['cantidad'].min()
+    cantidad_max = joaquin_por_anio['cantidad'].max()
+    anio_popular = joaquin_por_anio.loc[joaquin_por_anio['cantidad'].idxmax(), 'anio']
+    
+    return f"El nombre Joaquín tiene registros desde {anio_min} hasta {anio_max}. "\
+           f"Su popularidad varió desde un mínimo de {cantidad_min} nacimientos hasta "\
+           f"un máximo de {cantidad_max} nacimientos en el año {anio_popular}."
 
-
-analizar_cordoba()
+analizar_evolucion_historica()
