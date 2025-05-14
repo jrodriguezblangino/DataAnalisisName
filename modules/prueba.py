@@ -111,12 +111,19 @@ def analizar_evolucion_historica():
     p.yaxis.axis_label_text_font_size = "14pt"
     p.yaxis.axis_label_text_font_style = "bold"
     p.yaxis.axis_label_standoff = 15
+
+
+    #Ajustar el tamaño y el estilo del eje x
+
+    p.xaxis.axis_label_text_font_size = "12pt"
+    p.xyaxis.axis_label_text_font_style = "bold"
+    p.xaxis.axis_label_standoff = 15
    
    
 
     # Línea de tendencia
     line = p.line('anio', 'cantidad', source=source, line_width=2, 
-                 line_color='#1F77B4', legend_label="Joaquín")
+                 line_color='#1F77B4')
     
     # Añadir marcadores
     circles = p.circle('anio', 'cantidad', source=source, size=8, 
@@ -129,9 +136,6 @@ def analizar_evolucion_historica():
     ])
     p.add_tools(hover)
     
-    # Configuración
-    p.legend.location = "top_left"
-    p.legend.click_policy = "hide"
     
     # Guardar y mostrar
     output_file("visualizaciones/joaquin_evolucion_historica.html")
