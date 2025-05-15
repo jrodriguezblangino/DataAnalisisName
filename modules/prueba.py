@@ -74,29 +74,36 @@ print(f"Datos de ranking de Rodríguez por provincia: {len(rodriguez_ranking_pro
 print(f"Datos históricos del nombre Joaquín: {len(joaquin_historico)} registros")
 
 # --------------------------------------
-# 4. Análisis específico de Córdoba
+# 7. Picos de popularidad del nombre Joaquín
 # --------------------------------------
 
-# --------------------------------------
-# 6. Evolución histórica del nombre Joaquín
-# --------------------------------------
-
-def analizar_evolucion_historica():
-    print("\n6. Analizando evolución histórica del nombre Joaquín...")
+def identificar_picos_popularidad():
+    print("\n7. Identificando picos de popularidad del nombre Joaquín...")
     
     if len(joaquin_historico) == 0:
         print("No se encontraron datos históricos del nombre Joaquín")
-        return "No hay datos suficientes para el análisis de evolución histórica"
+        return "No hay datos suficientes para identificar picos de popularidad"
     
-    # Agrupar por año y sumar
+    # Identificar cambios significativos en la popularidad
     joaquin_por_anio = joaquin_historico.groupby('anio')['cantidad'].sum().reset_index()
     
-        # Crear gráfico interactivo con Bokeh
-    source = ColumnDataSource(joaquin_por_anio)
+    # Calcular el cambio porcentual respecto al año anterior
+    joaquin_por_anio['cambio_porcentual'] = joaquin_por_anio['cantidad'].pct_change() * 100
+    
+    # Identificar picos (definidos como años donde el crecimiento fue superior al 15%)
+    picos = joaquin_por_anio[joaquin_por_anio['cambio_porcentual'] > 15].copy()
+    
+    # Identificar caídas (definidas como años donde el decrecimiento fue superior al 15%)
+    caidas = joaquin_por_anio[joaquin_por_anio['cambio_porcentual'] < -15].copy()
+    
+    # Crear visualización de picos y caídas
+    source_completo = ColumnDataSource(joaquin_por_anio)
+    source_picos = ColumnDataSource(picos)
+    source_caidas = ColumnDataSource(caidas)
     
     p = figure(width=1080, height=600, 
-              title="Evolución Histórica del Nombre Joaquín",
-              title_location="above",
+              title="Picos y Caídas en la Popularidad del Nombre Joaquín",
+              title_location= "above",
               x_axis_label="Año", y_axis_label="Cantidad de Nacimientos",
               toolbar_location="right")
     
@@ -105,47 +112,99 @@ def analizar_evolucion_historica():
     p.title.standoff = 20  # Espaciado inferior del título
     p.title.align = "center"  # Centrar el título
 
-
-    #Ajustar el tamaño y el estilo del eje Y
+     #Ajustar el tamaño y el estilo del eje Y
 
     p.yaxis.axis_label_text_font_size = "14pt"
     p.yaxis.axis_label_text_font_style = "bold"
     p.yaxis.axis_label_standoff = 15
 
-
-    #Ajustar el tamaño y el estilo del eje x
+       #Ajustar el tamaño y el estilo del eje x
 
     p.xaxis.axis_label_text_font_size = "12pt"
     p.xaxis.axis_label_text_font_style = "bold"
     p.xaxis.axis_label_standoff = 15
-   
-   
+    
+    # Añadir un punto destacado para el nacimiento el 16 de julio de 1991
+    fecha_nacimiento = 1991  # Año de nacimiento
+    nacimiento_cantidad = joaquin_por_anio[joaquin_por_anio['anio'] == fecha_nacimiento]['cantidad'].sum()
 
-    # Línea de tendencia
-    line = p.line('anio', 'cantidad', source=source, line_width=2, 
-                 line_color='#1F77B4')
+    # Crear un DataFrame para el punto destacado
+    nacimiento_data = pd.DataFrame({
+        'anio': [fecha_nacimiento],
+        'cantidad': [nacimiento_cantidad],
+        'cambio_porcentual': [None]  # No se necesita para el punto destacado
+    })
+
+    # Crear un ColumnDataSource para el nacimiento
+    source_nacimiento = ColumnDataSource(nacimiento_data)
+
+    # Gráfico base de evolución
+    line = p.line('anio', 'cantidad', source=source_completo, line_width=2, 
+                  line_color='gray', legend_label="Tendencia")
     
-    # Añadir marcadores
-    circles = p.circle('anio', 'cantidad', source=source, size=8, 
-                      color='#C70039', fill_alpha=0.4)
+    # Destacar picos
+    picos_puntos = p.circle('anio', 'cantidad', source=source_picos, size=10, 
+                             color='green', legend_label="Picos de Popularidad")
     
-    # Agregar información interactiva
-    hover = HoverTool(renderers=[circles], tooltips=[
+    # Destacar caídas
+    caidas_puntos = p.circle('anio', 'cantidad', source=source_caidas, size=10, 
+                              color='red', legend_label="Caídas de Popularidad")
+    
+    # Destacar el nacimiento
+    nacimiento_punto = p.circle('anio', 'cantidad', source=source_nacimiento, size=12, 
+                                 color='blue', legend_label="Nacimiento (16 de Julio 1991)", 
+                                 line_color='black', line_width=2)
+    
+    # Añadir información interactiva para los picos
+    hover_picos = HoverTool(renderers=[picos_puntos], tooltips=[
         ("Año", "@anio"),
-        ("Nacimientos", "@cantidad")
+        ("Nacimientos", "@cantidad"),
+        ("Crecimiento", "@cambio_porcentual{0.0}%")
     ])
-    p.add_tools(hover)
+    p.add_tools(hover_picos)
+
+    # Añadir información interactiva para las caídas
+    hover_caidas = HoverTool(renderers=[caidas_puntos], tooltips=[
+        ("Año", "@anio"),
+        ("Nacimientos", "@cantidad"),
+        ("Decrecimiento", "@cambio_porcentual{0.0}%")
+    ])
+    p.add_tools(hover_caidas)
+
+    # Añadir información interactiva para el nacimiento
+    hover_nacimiento = HoverTool(renderers=[nacimiento_punto], tooltips=[
+        ("Año", "@anio"),
+        ("Nacimientos", "@cantidad"),
+        ("Análisis", "Tu nacimiento se da entre periodos de popularidad del nombre Joaquín.")
+    ])
+    p.add_tools(hover_nacimiento)
     
+    # Configuración
+    p.legend.location = "top_left"
+    p.legend.click_policy = "hide"
     
     # Guardar y mostrar
-    output_file("visualizaciones/joaquin_evolucion_historica.html")
+    output_file("visualizaciones/joaquin_picos_popularidad.html")
     save(p)
-    print(f"Gráfico guardado en visualizaciones/joaquin_evolucion_historica.html")
+    print(f"Gráfico guardado en visualizaciones/joaquin_picos_popularidad.html")
     
-    # Calcular algunos insights
-    anio_min = joaquin_por_anio['anio'].min()
-    anio_max = joaquin_por_anio['anio'].max()
-    cantidad_min = joaquin_por_anio['cantidad'].min()
-    cantidad_max = joaquin_por_anio['cantidad'].max()
+    # Generar insights
+    if len(picos) > 0:
+        mayor_pico = picos.loc[picos['cambio_porcentual'].idxmax()]
+        pico_info = f"El mayor pico de popularidad ocurrió en {int(mayor_pico['anio'])}, "\
+                   f"con un aumento del {mayor_pico['cambio_porcentual']:.1f}% "\
+                   f"respecto al año anterior."
+    else:
+        pico_info = "No se identificaron picos significativos de popularidad."
+    
+    if len(caidas) > 0:
+        mayor_caida = caidas.loc[caidas['cambio_porcentual'].idxmin()]
+        caida_info = f"La mayor caída ocurrió en {int(mayor_caida['anio'])}, "\
+                    f"con una disminución del {abs(mayor_caida['cambio_porcentual']):.1f}% "\
+                    f"respecto al año anterior."
+    else:
+        caida_info = "No se identificaron caídas significativas de popularidad."
+    
+    return f"{pico_info} {caida_info}"
 
-analizar_evolucion_historica()
+identificar_picos_popularidad()
