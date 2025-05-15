@@ -103,7 +103,7 @@ def identificar_picos_popularidad():
     
     p = figure(width=1080, height=600, 
               title="Picos y Caídas en la Popularidad del Nombre Joaquín",
-              title_location= "above",
+              title_location="above",
               x_axis_label="Año", y_axis_label="Cantidad de Nacimientos",
               toolbar_location="right")
     
@@ -152,7 +152,7 @@ def identificar_picos_popularidad():
     
     # Destacar el nacimiento
     nacimiento_punto = p.circle('anio', 'cantidad', source=source_nacimiento, size=12, 
-                                 color='blue', legend_label="Nacimiento (16 de Julio 1991)", 
+                                 color='blue', legend_label="Nacimiento Joaquin Rodriguez", 
                                  line_color='black', line_width=2)
     
     # Añadir información interactiva para los picos
@@ -175,7 +175,7 @@ def identificar_picos_popularidad():
     hover_nacimiento = HoverTool(renderers=[nacimiento_punto], tooltips=[
         ("Año", "@anio"),
         ("Nacimientos", "@cantidad"),
-        ("Análisis", "Tu nacimiento se da entre periodos de popularidad del nombre Joaquín.")
+        ("Análisis", "Mi nacimiento se da entre periodos de popularidad del nombre Joaquin.")
     ])
     p.add_tools(hover_nacimiento)
     
