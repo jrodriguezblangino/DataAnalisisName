@@ -421,21 +421,43 @@ def analizar_evolucion_historica():
     # Agrupar por año y sumar
     joaquin_por_anio = joaquin_historico.groupby('anio')['cantidad'].sum().reset_index()
     
-    # Crear gráfico interactivo con Bokeh
+        # Crear gráfico interactivo con Bokeh
     source = ColumnDataSource(joaquin_por_anio)
     
-    p = figure(width=900, height=500, 
+    p = figure(width=1080, height=600, 
               title="Evolución Histórica del Nombre Joaquín",
+              title_location="above",
               x_axis_label="Año", y_axis_label="Cantidad de Nacimientos",
               toolbar_location="right")
     
+    # Ajustar el tamaño de la fuente del título
+    p.title.text_font_size = "18pt"  # Tamaño del título
+    p.title.standoff = 20  # Espaciado inferior del título
+    p.title.align = "center"  # Centrar el título
+
+
+    #Ajustar el tamaño y el estilo del eje Y
+
+    p.yaxis.axis_label_text_font_size = "14pt"
+    p.yaxis.axis_label_text_font_style = "bold"
+    p.yaxis.axis_label_standoff = 15
+
+
+    #Ajustar el tamaño y el estilo del eje x
+
+    p.xaxis.axis_label_text_font_size = "12pt"
+    p.xaxis.axis_label_text_font_style = "bold"
+    p.xaxis.axis_label_standoff = 15
+   
+   
+
     # Línea de tendencia
     line = p.line('anio', 'cantidad', source=source, line_width=2, 
-                 line_color='#1F77B4', legend_label="Joaquín")
+                 line_color='#1F77B4')
     
     # Añadir marcadores
     circles = p.circle('anio', 'cantidad', source=source, size=8, 
-                      color='#1F77B4', fill_alpha=0.4)
+                      color='#C70039', fill_alpha=0.4)
     
     # Agregar información interactiva
     hover = HoverTool(renderers=[circles], tooltips=[
@@ -444,26 +466,19 @@ def analizar_evolucion_historica():
     ])
     p.add_tools(hover)
     
-    # Configuración
-    p.legend.location = "top_left"
-    p.legend.click_policy = "hide"
     
     # Guardar y mostrar
     output_file("visualizaciones/joaquin_evolucion_historica.html")
     save(p)
     print(f"Gráfico guardado en visualizaciones/joaquin_evolucion_historica.html")
     
-    # Calcular algunos insights
+    # Calcular y imprimir algunos insights
     anio_min = joaquin_por_anio['anio'].min()
     anio_max = joaquin_por_anio['anio'].max()
     cantidad_min = joaquin_por_anio['cantidad'].min()
     cantidad_max = joaquin_por_anio['cantidad'].max()
-    anio_popular = joaquin_por_anio.loc[joaquin_por_anio['cantidad'].idxmax(), 'anio']
-    
-    return f"El nombre Joaquín tiene registros desde {anio_min} hasta {anio_max}. "\
-           f"Su popularidad varió desde un mínimo de {cantidad_min} nacimientos hasta "\
-           f"un máximo de {cantidad_max} nacimientos en el año {anio_popular}."
 
+    
 # --------------------------------------
 # 7. Picos de popularidad del nombre Joaquín
 # --------------------------------------
