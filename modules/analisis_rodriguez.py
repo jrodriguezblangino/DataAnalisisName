@@ -509,7 +509,7 @@ def identificar_picos_popularidad():
     
     p = figure(width=1080, height=600, 
               title="Picos y Caídas en la Popularidad del Nombre Joaquín",
-              title_location= "above",
+              title_location="above",
               x_axis_label="Año", y_axis_label="Cantidad de Nacimientos",
               toolbar_location="right")
     
@@ -530,32 +530,60 @@ def identificar_picos_popularidad():
     p.xaxis.axis_label_text_font_style = "bold"
     p.xaxis.axis_label_standoff = 15
     
+    # Añadir un punto destacado para el nacimiento el 16 de julio de 1991
+    fecha_nacimiento = 1991  # Año de nacimiento
+    nacimiento_cantidad = joaquin_por_anio[joaquin_por_anio['anio'] == fecha_nacimiento]['cantidad'].sum()
+
+    # Crear un DataFrame para el punto destacado
+    nacimiento_data = pd.DataFrame({
+        'anio': [fecha_nacimiento],
+        'cantidad': [nacimiento_cantidad],
+        'cambio_porcentual': [None]  # No se necesita para el punto destacado
+    })
+
+    # Crear un ColumnDataSource para el nacimiento
+    source_nacimiento = ColumnDataSource(nacimiento_data)
+
     # Gráfico base de evolución
     line = p.line('anio', 'cantidad', source=source_completo, line_width=2, 
-                 line_color='gray', legend_label="Tendencia")
+                  line_color='gray', legend_label="Tendencia")
     
     # Destacar picos
     picos_puntos = p.circle('anio', 'cantidad', source=source_picos, size=10, 
-                          color='green', legend_label="Picos de Popularidad")
+                             color='green', legend_label="Picos de Popularidad")
     
     # Destacar caídas
     caidas_puntos = p.circle('anio', 'cantidad', source=source_caidas, size=10, 
-                           color='red', legend_label="Caídas de Popularidad")
+                              color='red', legend_label="Caídas de Popularidad")
     
-    # Añadir información interactiva
+    # Destacar el nacimiento
+    nacimiento_punto = p.circle('anio', 'cantidad', source=source_nacimiento, size=12, 
+                                 color='blue', legend_label="Nacimiento Joaquin Rodriguez", 
+                                 line_color='black', line_width=2)
+    
+    # Añadir información interactiva para los picos
     hover_picos = HoverTool(renderers=[picos_puntos], tooltips=[
         ("Año", "@anio"),
         ("Nacimientos", "@cantidad"),
         ("Crecimiento", "@cambio_porcentual{0.0}%")
     ])
-    
+    p.add_tools(hover_picos)
+
+    # Añadir información interactiva para las caídas
     hover_caidas = HoverTool(renderers=[caidas_puntos], tooltips=[
         ("Año", "@anio"),
         ("Nacimientos", "@cantidad"),
         ("Decrecimiento", "@cambio_porcentual{0.0}%")
     ])
-    
-    p.add_tools(hover_picos, hover_caidas)
+    p.add_tools(hover_caidas)
+
+    # Añadir información interactiva para el nacimiento
+    hover_nacimiento = HoverTool(renderers=[nacimiento_punto], tooltips=[
+        ("Año", "@anio"),
+        ("Nacimientos", "@cantidad"),
+        ("Análisis", "Mi nacimiento se da entre periodos de popularidad del nombre Joaquin.")
+    ])
+    p.add_tools(hover_nacimiento)
     
     # Configuración
     p.legend.location = "top_left"
