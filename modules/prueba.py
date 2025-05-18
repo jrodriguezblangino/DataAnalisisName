@@ -117,37 +117,41 @@ def analizar_generaciones():
     # Convertir a DataFrame
     df_generaciones = pd.DataFrame(datos_generacionales)
     
+    # Agregar una columna de colores
+    df_generaciones['color'] = ["#1F77B4" if i % 2 == 0 else "#C70039" for i in range(len(df_generaciones))]
+    
     if len(df_generaciones) == 0:
         return "No hay datos suficientes para realizar el análisis generacional"
     
     # Crear visualización
     source = ColumnDataSource(df_generaciones)
     
-    p = figure(x_range=df_generaciones['generacion'], width=800, height=500,
-              title="Popularidad del Nombre Joaquín por Generación",
-              toolbar_location="right")
+    p = figure(x_range=df_generaciones['generacion'], width=1080, height=600,
+               title="Popularidad del Nombre Joaquín por Generación",
+               toolbar_location="right")
     
     # Ajustar el tamaño de la fuente del título
     p.title.text_font_size = "18pt"  # Tamaño del título
     p.title.standoff = 20  # Espaciado inferior del título
     p.title.align = "center"  # Centrar el título
 
-     #Ajustar el tamaño y el estilo del eje Y
-
+    # Ajustar el tamaño y el estilo del eje Y
     p.yaxis.axis_label_text_font_size = "14pt"
     p.yaxis.axis_label_text_font_style = "bold"
     p.yaxis.axis_label_standoff = 15
 
-       #Ajustar el tamaño y el estilo del eje x
-
+    # Ajustar el tamaño y el estilo del eje x
     p.xaxis.axis_label_text_font_size = "12pt"
     p.xaxis.axis_label_text_font_style = "bold"
     p.xaxis.axis_label_standoff = 15
-    
-    
-    # Barras para total
+
+    # Eliminar la cuadrícula
+    p.xgrid.visible = False  # Desactivar cuadrícula del eje x
+    p.ygrid.visible = False  # Desactivar cuadrícula del eje y
+
+    # Barras para total con intercalación de colores
     p.vbar(x='generacion', top='total', width=0.6, source=source,
-          color="#1F77B4", legend_label="Total Nacimientos")
+           color='color', legend_label="Total Nacimientos")
     
     # Configuración
     p.xaxis.major_label_orientation = 3.14/4
