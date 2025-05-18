@@ -127,6 +127,24 @@ def analizar_generaciones():
               title="Popularidad del Nombre Joaquín por Generación",
               toolbar_location="right")
     
+    # Ajustar el tamaño de la fuente del título
+    p.title.text_font_size = "18pt"  # Tamaño del título
+    p.title.standoff = 20  # Espaciado inferior del título
+    p.title.align = "center"  # Centrar el título
+
+     #Ajustar el tamaño y el estilo del eje Y
+
+    p.yaxis.axis_label_text_font_size = "14pt"
+    p.yaxis.axis_label_text_font_style = "bold"
+    p.yaxis.axis_label_standoff = 15
+
+       #Ajustar el tamaño y el estilo del eje x
+
+    p.xaxis.axis_label_text_font_size = "12pt"
+    p.xaxis.axis_label_text_font_style = "bold"
+    p.xaxis.axis_label_standoff = 15
+    
+    
     # Barras para total
     p.vbar(x='generacion', top='total', width=0.6, source=source,
           color="#1F77B4", legend_label="Total Nacimientos")
