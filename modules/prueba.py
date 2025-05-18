@@ -86,12 +86,12 @@ def analizar_generaciones():
     
     # Definir rangos generacionales (aproximados)
     generaciones = {
-        'Silenciosa (1928-1945)': (1928, 1945),
-        'Baby Boomers (1946-1964)': (1946, 1964),
-        'Generación X (1965-1980)': (1965, 1980),
-        'Millennials (1981-1996)': (1981, 1996),
-        'Generación Z (1997-2012)': (1997, 2012),
-        'Generación Alpha (2013-)': (2013, 2030)
+        '1928-1945': (1928, 1945),
+        '1946-1964': (1946, 1964),
+        '1965-1980': (1965, 1980),
+        '1981-1996': (1981, 1996),
+        '1997-2012': (1997, 2012),
+        '2013- Actualidad': (2013, 2030)
     }
     
     # Preparar datos para el análisis generacional
