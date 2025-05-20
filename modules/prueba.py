@@ -141,13 +141,13 @@ def analizar_generaciones():
     p.yaxis.axis_label_standoff = 15
 
     # Ajustar el tamaño y el estilo del eje x
-    p.xaxis.axis_label_text_font_size = "12pt"
+    p.xaxis.axis_label_text_font_size = "15pt"
     p.xaxis.axis_label_text_font_style = "bold"
     p.xaxis.axis_label_standoff = 15
 
     # Eliminar la cuadrícula
-    p.xgrid.visible = False  # Desactivar cuadrícula del eje x
-    p.ygrid.visible = False  # Desactivar cuadrícula del eje y
+    p.xgrid.visible = False  
+    p.ygrid.visible = False 
 
     # Barras para total con intercalación de colores
     p.vbar(x='generacion', top='total', width=0.6, source=source,
@@ -156,6 +156,7 @@ def analizar_generaciones():
     # Configuración
     p.xaxis.major_label_orientation = 3.14/4
     p.yaxis.axis_label = "Total de Nacimientos"
+    p.yaxis.axis_label_text_font_size = "14pt" 
     p.legend.location = "top_left"
     
     # Información interactiva
