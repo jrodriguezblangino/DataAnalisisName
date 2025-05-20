@@ -626,12 +626,12 @@ def analizar_generaciones():
     
     # Definir rangos generacionales (aproximados)
     generaciones = {
-        'Silenciosa (1928-1945)': (1928, 1945),
-        'Baby Boomers (1946-1964)': (1946, 1964),
-        'Generación X (1965-1980)': (1965, 1980),
-        'Millennials (1981-1996)': (1981, 1996),
-        'Generación Z (1997-2012)': (1997, 2012),
-        'Generación Alpha (2013-)': (2013, 2030)
+        '1928-1945': (1928, 1945),
+        '1946-1964': (1946, 1964),
+        '1965-1980': (1965, 1980),
+        '1981-1996': (1981, 1996),
+        '1997-2012': (1997, 2012),
+        '2013- Actualidad': (2013, 2030)
     }
     
     # Preparar datos para el análisis generacional
@@ -657,23 +657,46 @@ def analizar_generaciones():
     # Convertir a DataFrame
     df_generaciones = pd.DataFrame(datos_generacionales)
     
+    # Agregar una columna de colores
+    df_generaciones['color'] = ["#1F77B4" if i % 2 == 0 else "#C70039" for i in range(len(df_generaciones))]
+    
     if len(df_generaciones) == 0:
         return "No hay datos suficientes para realizar el análisis generacional"
     
     # Crear visualización
     source = ColumnDataSource(df_generaciones)
     
-    p = figure(x_range=df_generaciones['generacion'], width=800, height=500,
-              title="Popularidad del Nombre Joaquín por Generación",
-              toolbar_location="right")
+    p = figure(x_range=df_generaciones['generacion'], width=1080, height=600,
+               title="Popularidad del Nombre Joaquín por Generación",
+               toolbar_location="right")
     
-    # Barras para total
+    # Ajustar el tamaño de la fuente del título
+    p.title.text_font_size = "18pt"  # Tamaño del título
+    p.title.standoff = 20  # Espaciado inferior del título
+    p.title.align = "center"  # Centrar el título
+
+    # Ajustar el tamaño y el estilo del eje Y
+    p.yaxis.axis_label_text_font_size = "14pt"
+    p.yaxis.axis_label_text_font_style = "bold"
+    p.yaxis.axis_label_standoff = 15
+
+    # Ajustar el tamaño y el estilo del eje x
+    p.xaxis.axis_label_text_font_size = "15pt"
+    p.xaxis.axis_label_text_font_style = "bold"
+    p.xaxis.axis_label_standoff = 15
+
+    # Eliminar la cuadrícula
+    p.xgrid.visible = False  
+    p.ygrid.visible = False 
+
+    # Barras para total con intercalación de colores
     p.vbar(x='generacion', top='total', width=0.6, source=source,
-          color="#1F77B4", legend_label="Total Nacimientos")
+           color='color', legend_label="Total Nacimientos")
     
     # Configuración
     p.xaxis.major_label_orientation = 3.14/4
     p.yaxis.axis_label = "Total de Nacimientos"
+    p.yaxis.axis_label_text_font_size = "14pt" 
     p.legend.location = "top_left"
     
     # Información interactiva
