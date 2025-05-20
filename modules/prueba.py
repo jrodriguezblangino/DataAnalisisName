@@ -77,108 +77,90 @@ print(f"Datos históricos del nombre Joaquín: {len(joaquin_historico)} registro
 # 9. Comparativa generacional del nombre Joaquín
 # --------------------------------------
 
-def analizar_generaciones():
-    print("\n9. Analizando popularidad del nombre Joaquín por generaciones...")
+# Variable global para almacenar la estimación
+estimacion_joaquin_rodriguez = 0
+
+def estimar_unicidad_combinacion():
+    global estimacion_joaquin_rodriguez  # Hacer que la variable sea global
+    print("\n10. Estimando unicidad de la combinación Joaquín Rodríguez...")
     
-    if len(joaquin_historico) == 0:
-        print("No se encontraron datos históricos del nombre Joaquín")
-        return "No hay datos suficientes para el análisis generacional"
+    if len(rodriguez_pais) == 0 or len(joaquin_historico) == 0:
+        print("No hay datos suficientes para estimar la unicidad de la combinación")
+        return "No hay datos suficientes para estimar la unicidad de la combinación"
     
-    # Definir rangos generacionales (aproximados)
-    generaciones = {
-        '1928-1945': (1928, 1945),
-        '1946-1964': (1946, 1964),
-        '1965-1980': (1965, 1980),
-        '1981-1996': (1981, 1996),
-        '1997-2012': (1997, 2012),
-        '2013- Actualidad': (2013, 2030)
-    }
+    # Obtener porcentaje del apellido Rodríguez
+    porcentaje_rodriguez = rodriguez_pais['porcentaje_de_poblacion_portadora'].values[0] / 100
     
-    # Preparar datos para el análisis generacional
-    datos_generacionales = []
+    # Estimar la frecuencia del nombre Joaquín
+    ultimo_periodo = joaquin_historico.loc[joaquin_historico['anio'].idxmax()]
+    anio_reciente = ultimo_periodo['anio']
     
-    for gen_nombre, (inicio, fin) in generaciones.items():
-        # Filtrar datos para esta generación
-        gen_data = joaquin_historico[
-            (joaquin_historico['anio'] >= inicio) & 
-            (joaquin_historico['anio'] <= fin)
-        ]
+    # Obtener todos los nombres del mismo periodo para calcular proporción
+    if 'anio' in historico_nombres.columns:
+        nombres_mismo_periodo = historico_nombres[historico_nombres['anio'] == anio_reciente]
+        total_nacimientos_periodo = nombres_mismo_periodo['cantidad'].sum()
+        nacimientos_joaquin_periodo = joaquin_historico[joaquin_historico['anio'] == anio_reciente]['cantidad'].sum()
         
-        if len(gen_data) > 0:
-            total = gen_data['cantidad'].sum()
-            promedio_anual = total / (fin - inicio + 1)
-            datos_generacionales.append({
-                'generacion': gen_nombre,
-                'total': total,
-                'promedio_anual': promedio_anual,
-                'periodo': f"{inicio}-{fin}"
-            })
+        if total_nacimientos_periodo > 0:
+            porcentaje_joaquin = nacimientos_joaquin_periodo / total_nacimientos_periodo
+        else:
+            porcentaje_joaquin = 0  # Asegurarse de que no sea cero
+    else:
+        porcentaje_joaquin = 0  # Asegurarse de que no sea cero
     
-    # Convertir a DataFrame
-    df_generaciones = pd.DataFrame(datos_generacionales)
+    # Estimar población total de Argentina (aproximadamente 45 millones)
+    poblacion_argentina = 45000000
     
-    # Agregar una columna de colores
-    df_generaciones['color'] = ["#1F77B4" if i % 2 == 0 else "#C70039" for i in range(len(df_generaciones))]
+    # Calcular estimación de personas con el apellido Rodríguez
+    personas_rodriguez = poblacion_argentina * porcentaje_rodriguez
     
-    if len(df_generaciones) == 0:
-        return "No hay datos suficientes para realizar el análisis generacional"
+    # Calcular estimación de personas llamadas Joaquín Rodríguez
+    estimacion_joaquin_rodriguez = personas_rodriguez * porcentaje_joaquin
     
     # Crear visualización
-    source = ColumnDataSource(df_generaciones)
+    labels = ['Apellido Rodríguez', 'Nombre Joaquín', 'Joaquín Rodríguez']
+    valores = [personas_rodriguez, poblacion_argentina * porcentaje_joaquin, estimacion_joaquin_rodriguez]
     
-    p = figure(x_range=df_generaciones['generacion'], width=1080, height=600,
-               title="Popularidad del Nombre Joaquín por Generación",
-               toolbar_location="right")
+    # Verificar valores
+    print(f"Valores para el gráfico: {valores}")
     
-    # Ajustar el tamaño de la fuente del título
-    p.title.text_font_size = "18pt"  # Tamaño del título
-    p.title.standoff = 20  # Espaciado inferior del título
-    p.title.align = "center"  # Centrar el título
-
-    # Ajustar el tamaño y el estilo del eje Y
-    p.yaxis.axis_label_text_font_size = "14pt"
-    p.yaxis.axis_label_text_font_style = "bold"
-    p.yaxis.axis_label_standoff = 15
-
-    # Ajustar el tamaño y el estilo del eje x
-    p.xaxis.axis_label_text_font_size = "15pt"
-    p.xaxis.axis_label_text_font_style = "bold"
-    p.xaxis.axis_label_standoff = 15
-
-    # Eliminar la cuadrícula
-    p.xgrid.visible = False  
-    p.ygrid.visible = False 
-
-    # Barras para total con intercalación de colores
-    p.vbar(x='generacion', top='total', width=0.6, source=source,
-           color='color', legend_label="Total Nacimientos")
+    # Asegurarse de que todos los valores sean mayores que cero
+    if any(v <= 0 for v in valores):
+        print("Error: Uno o más valores son cero o negativos. Ajustando a 1 para la visualización.")
+        valores = [max(v, 1) for v in valores]  # Ajustar a 1 para evitar problemas con la escala logarítmica
     
-    # Configuración
+    # Crear colores para las barras
+    colores = ["#1F77B4", "#FF7F0E", "#2CA02C"]
+    
+    source = ColumnDataSource(data=dict(labels=labels, valores=valores, colores=colores))
+    
+    p = figure(x_range=labels, width=600, height=500,
+               title="Estimación de Personas con el Nombre y Apellido",
+               toolbar_location="right")  # Cambiar a escala lineal
+    
+    p.vbar(x='labels', top='valores', width=0.6, source=source,
+           color='colores')  # Usar la columna de colores
+    
+    p.y_range.start = 1  # Comenzar desde 1 en escala lineal
+    p.xgrid.grid_line_color = None
+    p.yaxis.axis_label = "Estimación de Personas"
     p.xaxis.major_label_orientation = 3.14/4
-    p.yaxis.axis_label = "Total de Nacimientos"
-    p.yaxis.axis_label_text_font_size = "14pt" 
-    p.legend.location = "top_left"
     
     # Información interactiva
     hover = HoverTool()
     hover.tooltips = [
-        ("Generación", "@generacion"),
-        ("Periodo", "@periodo"),
-        ("Total Nacimientos", "@total"),
-        ("Promedio Anual", "@promedio_anual{0.0}")
+        ("Categoría", "@labels"),
+        ("Estimación", "@valores{0,0}")
     ]
     p.add_tools(hover)
     
     # Guardar y mostrar
-    output_file("visualizaciones/joaquin_analisis_generacional.html")
+    output_file("visualizaciones/joaquin_unicidad_combinacion.html")
     save(p)
-    print(f"Gráfico guardado en visualizaciones/joaquin_analisis_generacional.html")
+    print(f"Gráfico guardado en visualizaciones/joaquin_unicidad_combinacion.html")
     
-    # Generar insights
-    gen_popular = df_generaciones.loc[df_generaciones['promedio_anual'].idxmax(), 'generacion']
-    prom_max = df_generaciones['promedio_anual'].max()
-    
-    return f"El nombre Joaquín ha sido más popular durante la {gen_popular}, "\
-           f"con un promedio de {prom_max:.0f} nacimientos por año."
+    # Retornar un resumen de la estimación
+    return f"Se estima que hay aproximadamente {estimacion_joaquin_rodriguez:.0f} personas llamadas Joaquín Rodríguez en Argentina."
 
-analizar_generaciones()
+
+estimar_unicidad_combinacion()
