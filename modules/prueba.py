@@ -190,9 +190,9 @@ def generar_mapa_distribucion_argentina():
         high=merged_rodriguez['cantidad'].max()
     )
     
-    # Crear figura
-    figure_width = 700
-    figure_height = 600
+    # Aumentar el tamaño de la figura en un 20% y hacerla un poco más larga para mantener la figura correcta del mapa
+    figure_width = 960
+    figure_height = 720
     
     p1 = figure(
         title="Distribución del apellido Rodríguez por provincia",
