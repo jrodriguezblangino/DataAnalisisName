@@ -77,7 +77,7 @@ print(f"Datos históricos del nombre Joaquín: {len(joaquin_historico)} registro
 # 9. Comparativa generacional del nombre Joaquín
 # --------------------------------------
 
-estimacion_rodriguez = 0
+estimacion_joaquin_rodriguez = 0
 
 def generar_mapa_distribucion_argentina():
     """
