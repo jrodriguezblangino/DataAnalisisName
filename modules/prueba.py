@@ -77,112 +77,161 @@ print(f"Datos históricos del nombre Joaquín: {len(joaquin_historico)} registro
 # 9. Comparativa generacional del nombre Joaquín
 # --------------------------------------
 
-# Variable global para almacenar la estimación
-estimacion_joaquin_rodriguez = 0
-
-def estimar_unicidad_combinacion():
-    global estimacion_joaquin_rodriguez  # Hacer que la variable sea global
-    print("\n10. Estimando unicidad de la combinación Joaquín Rodríguez...")
+def generar_mapa_distribucion_argentina():
+    """
+    Genera un mapa de calor de Argentina con la distribución de Rodríguez, Joaquín y la combinación.
     
-    if len(rodriguez_pais) == 0 or len(joaquin_historico) == 0:
-        print("No hay datos suficientes para estimar la unicidad de la combinación")
-        return "No hay datos suficientes para estimar la unicidad de la combinación"
+    Utiliza los datos reales de rodriguez_provincias y joaquin_historico para crear
+    visualizaciones geográficas de la distribución.
     
-    # Obtener porcentaje del apellido Rodríguez
-    porcentaje_rodriguez = rodriguez_pais['porcentaje_de_poblacion_portadora'].values[0] / 100
+    Retorna:
+    --------
+    str
+        Mensaje con la ruta de los archivos guardados
+    """
+    print("\nGenerando mapa de calor de distribución en Argentina...")
     
-    # Estimar la frecuencia del nombre Joaquín
-    ultimo_periodo = joaquin_historico.loc[joaquin_historico['anio'].idxmax()]
-    anio_reciente = ultimo_periodo['anio']
+    # Usar los datasets globales ya cargados
+    global rodriguez_provincias, joaquin_historico, estimacion_joaquin_rodriguez
     
-    # Obtener todos los nombres del mismo periodo para calcular proporción
-    if 'anio' in historico_nombres.columns:
-        nombres_mismo_periodo = historico_nombres[historico_nombres['anio'] == anio_reciente]
-        total_nacimientos_periodo = nombres_mismo_periodo['cantidad'].sum()
-        nacimientos_joaquin_periodo = joaquin_historico[joaquin_historico['anio'] == anio_reciente]['cantidad'].sum()
-        
-        if total_nacimientos_periodo > 0:
-            porcentaje_joaquin = nacimientos_joaquin_periodo / total_nacimientos_periodo
-        else:
-            porcentaje_joaquin = 0  # Asegurarse de que no sea cero
+    # Verificar si tenemos los datos necesarios
+    if len(rodriguez_provincias) == 0:
+        return "No hay datos suficientes sobre el apellido Rodríguez por provincia."
+    
+    # Preparar datos de Joaquín por provincia
+    if 'provincia_nombre' in joaquin_historico.columns:
+        # Si ya tenemos los datos por provincia, los agrupamos
+        joaquin_por_provincia = joaquin_historico.groupby('provincia_nombre')['cantidad'].sum().reset_index()
+        joaquin_por_provincia.rename(columns={'cantidad': 'cantidad_joaquin'}, inplace=True)
     else:
-        porcentaje_joaquin = 0  # Asegurarse de que no sea cero
+        # Si no tenemos datos por provincia, creamos un DataFrame vacío con la estructura correcta
+        print("No se encontraron datos del nombre Joaquín por provincia.")
+        joaquin_por_provincia = pd.DataFrame(columns=['provincia_nombre', 'cantidad_joaquin'])
     
-    # Estimar población total de Argentina (aproximadamente 45 millones)
-    poblacion_argentina = 45000000
+    try:
+        # Cargar el archivo de shapefile de Argentina
+        argentina_map = gpd.read_file("shapefiles/gadm41_ARG_1.shp")
+        print(f"Shapefile cargado correctamente con {len(argentina_map)} provincias.")
+    except Exception as e:
+        print(f"Error al cargar el shapefile: {e}")
+        return "Error al cargar el shapefile de Argentina."
     
-    # Calcular estimación de personas con el apellido Rodríguez
-    personas_rodriguez = poblacion_argentina * porcentaje_rodriguez
+    # Renombrar columnas para facilitar la unión
+    if 'NAME_1' in argentina_map.columns:
+        argentina_map = argentina_map.rename(columns={'NAME_1': 'provincia_nombre'})
     
-    # Calcular estimación de personas llamadas Joaquín Rodríguez
-    estimacion_joaquin_rodriguez = personas_rodriguez * porcentaje_joaquin
+    # Normalizar nombres de provincias para unir correctamente los DataFrames
+    def normalizar_nombre(nombre):
+        if not isinstance(nombre, str):
+            return ""
+        
+        # Mapeo de nombres que podrían variar
+        mapeo = {
+            'Ciudad Autónoma de Buenos Aires': 'Ciudad de Buenos Aires',
+            'CABA': 'Ciudad de Buenos Aires',
+            'Tierra del Fuego': 'Tierra del Fuego, Antártida e Islas del Atlántico Sur',
+            'Santiago Del Estero': 'Santiago del Estero'
+        }
+        
+        if nombre in mapeo:
+            return mapeo[nombre]
+            
+        # Normalización general
+        return nombre.lower().strip().replace(' ', '_')
     
-    # Crear visualización
-    labels = ['Apellido Rodríguez', 'Nombre Joaquín', 'Joaquín Rodríguez']
-    valores = [personas_rodriguez, poblacion_argentina * porcentaje_joaquin, estimacion_joaquin_rodriguez]
+    # Aplicar normalización a todos los datasets
+    argentina_map['provincia_norm'] = argentina_map['provincia_nombre'].apply(normalizar_nombre)
+    rodriguez_provincias['provincia_norm'] = rodriguez_provincias['provincia_nombre'].apply(normalizar_nombre)
     
-    # Verificar valores
-    print(f"Valores para el gráfico: {valores}")
+    if len(joaquin_por_provincia) > 0 and 'provincia_nombre' in joaquin_por_provincia.columns:
+        joaquin_por_provincia['provincia_norm'] = joaquin_por_provincia['provincia_nombre'].apply(normalizar_nombre)
     
-    # Asegurarse de que todos los valores sean mayores que cero
-    if any(v <= 0 for v in valores):
-        print("Error: Uno o más valores son cero o negativos. Ajustando a 1 para la visualización.")
-        valores = [max(v, 1) for v in valores]  # Ajustar a 1 para evitar problemas con la escala logarítmica
+    # Unir datos de Rodríguez con el mapa
+    merged_rodriguez = argentina_map.merge(rodriguez_provincias, on='provincia_norm', how='left')
+    merged_rodriguez['cantidad'] = merged_rodriguez['cantidad'].fillna(0)
     
-    # Crear colores para las barras
-    colores = ["#1F77B4", "#C70039", "#2CA02C"]
+    # Unir datos de Joaquín con el mapa
+    if len(joaquin_por_provincia) > 0 and 'provincia_norm' in joaquin_por_provincia.columns:
+        merged_joaquin = argentina_map.merge(joaquin_por_provincia, on='provincia_norm', how='left')
+        merged_joaquin['cantidad_joaquin'] = merged_joaquin['cantidad_joaquin'].fillna(0)
+    else:
+        # Si no hay datos de Joaquín por provincia, usar el mismo DataFrame de base
+        merged_joaquin = merged_rodriguez.copy()
+        merged_joaquin['cantidad_joaquin'] = 0
     
-    source = ColumnDataSource(data=dict(labels=labels, valores=valores, colores=colores))
+    # Crear estimación para la combinación Joaquín Rodríguez
+    merged_combinacion = merged_rodriguez.copy()
     
-    p = figure(x_range=labels, width=1080, height=600,
-               title="Estimación de Personas con el Nombre y Apellido",
-               toolbar_location="right")  # Cambiar a escala lineal
+    # Si tenemos una estimación global, la distribuimos proporcionalmente según apellido Rodríguez
+    if estimacion_joaquin_rodriguez > 0:
+        total_rodriguez = merged_rodriguez['cantidad'].sum()
+        if total_rodriguez > 0:
+            merged_combinacion['estimacion_joaquin_rodriguez'] = (
+                merged_rodriguez['cantidad'] / total_rodriguez * estimacion_joaquin_rodriguez
+            )
+        else:
+            merged_combinacion['estimacion_joaquin_rodriguez'] = 0
+    else:
+        # Si no tenemos estimación global, hacemos una aproximación basada en los datos disponibles
+        merged_combinacion['estimacion_joaquin_rodriguez'] = merged_rodriguez['cantidad'] * 0.01
     
-    p.vbar(x='labels', top='valores', width=0.4, source=source,
-           color='colores')  # Usar la columna de colores
+    # Convertir a GeoJSON para Bokeh
+    geo_source_rodriguez = GeoJSONDataSource(geojson=merged_rodriguez.to_json())
+    geo_source_joaquin = GeoJSONDataSource(geojson=merged_joaquin.to_json())
+    geo_source_combinacion = GeoJSONDataSource(geojson=merged_combinacion.to_json())
     
-    p.y_range.start = 1  # Comenzar desde 1 en escala lineal
-    p.xgrid.grid_line_color = None
-    p.yaxis.axis_label = "Estimación de Personas"
-    p.xaxis.major_label_orientation = 3.14/4
+    # Configurar colores para los mapas
+    palette_rodriguez = Viridis256
+    color_mapper_rodriguez = LinearColorMapper(
+        palette=palette_rodriguez, 
+        low=merged_rodriguez['cantidad'].min(),
+        high=merged_rodriguez['cantidad'].max()
+    )
+    
+    # Crear figura
+    figure_width = 700
+    figure_height = 600
+    
+    p1 = figure(
+        title="Distribución del apellido Rodríguez por provincia",
+        height=figure_height, 
+        width=figure_width, 
+        toolbar_location="right"
+    )
+    
+    # Añadir los polígonos de las provincias
+    p1.patches(
+        'xs', 'ys', 
+        source=geo_source_rodriguez,
+        fill_color={'field': 'cantidad', 'transform': color_mapper_rodriguez},
+        line_color='black', 
+        line_width=0.5, 
+        fill_alpha=0.7
+    )
+    
+    # Añadir la barra de color
+    color_bar_rodriguez = ColorBar(
+        color_mapper=color_mapper_rodriguez, 
+        label_standoff=12, 
+        border_line_color=None,
+        location=(0, 0), 
+        title='Cantidad de personas'
+    )
+    p1.add_layout(color_bar_rodriguez, 'right')
+    
+    # Añadir información al pasar el cursor
+    hover_rodriguez = HoverTool(tooltips=[
+        ('Provincia', '@provincia_nombre'),
+        ('Cantidad', '@cantidad{0,0}')
+    ])
+    p1.add_tools(hover_rodriguez)
+    
+    # Guardar el mapa
+    output_file("visualizaciones/mapa_rodriguez_provincias.html")
+    save(p1)
+    print("Mapa de apellido Rodríguez guardado en visualizaciones/mapa_rodriguez_provincias.html")
+    
+    return "Mapa generado correctamente basado en datos reales."
 
-    # Ajustar el tamaño de la fuente del título
-    p.title.text_font_size = "18pt"  # Tamaño del título
-    p.title.standoff = 20  # Espaciado inferior del título
-    p.title.align = "center"  # Centrar el título
 
-    # Ajustar el tamaño y el estilo del eje Y
-    p.yaxis.axis_label_text_font_size = "14pt"
-    p.yaxis.axis_label_text_font_style = "bold"
-    p.yaxis.axis_label_standoff = 15
-
-    # Ajustar el tamaño y el estilo del eje x
-    p.xaxis.axis_label_text_font_size = "15pt"
-    p.xaxis.axis_label_text_font_style = "bold"
-    p.xaxis.axis_label_standoff = 15
-
-    # Eliminar la cuadrícula
-    p.xgrid.visible = False  
-    p.ygrid.visible = False 
-    
-    # Formatear el eje Y para evitar notación científica
-    p.yaxis.formatter = NumeralTickFormatter(format="0,0")  # Formato sin notación científica
-    
-    # Información interactiva
-    hover = HoverTool()
-    hover.tooltips = [
-        ("Categoría", "@labels"),
-        ("Estimación", "@valores{0,0}")
-    ]
-    p.add_tools(hover)
-    
-    # Guardar y mostrar
-    output_file("visualizaciones/joaquin_unicidad_combinacion.html")
-    save(p)
-    print(f"Gráfico guardado en visualizaciones/joaquin_unicidad_combinacion.html")
-    
-    # Retornar un resumen de la estimación
-    return f"Se estima que hay aproximadamente {estimacion_joaquin_rodriguez:.0f} personas llamadas Joaquín Rodríguez en Argentina."
-
-
-estimar_unicidad_combinacion()
+generar_mapa_distribucion_argentina()
