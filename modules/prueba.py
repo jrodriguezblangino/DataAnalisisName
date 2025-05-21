@@ -138,7 +138,7 @@ def estimar_unicidad_combinacion():
                title="Estimación de Personas con el Nombre y Apellido",
                toolbar_location="right")  # Cambiar a escala lineal
     
-    p.vbar(x='labels', top='valores', width=0.6, source=source,
+    p.vbar(x='labels', top='valores', width=0.4, source=source,
            color='colores')  # Usar la columna de colores
     
     p.y_range.start = 1  # Comenzar desde 1 en escala lineal

@@ -778,21 +778,43 @@ def estimar_unicidad_combinacion():
         valores = [max(v, 1) for v in valores]  # Ajustar a 1 para evitar problemas con la escala logarítmica
     
     # Crear colores para las barras
-    colores = ["#1F77B4", "#FF7F0E", "#2CA02C"]
+    colores = ["#1F77B4", "#C70039", "#2CA02C"]
     
     source = ColumnDataSource(data=dict(labels=labels, valores=valores, colores=colores))
     
-    p = figure(x_range=labels, width=600, height=500,
+    p = figure(x_range=labels, width=1080, height=600,
                title="Estimación de Personas con el Nombre y Apellido",
                toolbar_location="right")  # Cambiar a escala lineal
     
-    p.vbar(x='labels', top='valores', width=0.6, source=source,
+    p.vbar(x='labels', top='valores', width=0.4, source=source,
            color='colores')  # Usar la columna de colores
     
     p.y_range.start = 1  # Comenzar desde 1 en escala lineal
     p.xgrid.grid_line_color = None
     p.yaxis.axis_label = "Estimación de Personas"
     p.xaxis.major_label_orientation = 3.14/4
+
+    # Ajustar el tamaño de la fuente del título
+    p.title.text_font_size = "18pt"  # Tamaño del título
+    p.title.standoff = 20  # Espaciado inferior del título
+    p.title.align = "center"  # Centrar el título
+
+    # Ajustar el tamaño y el estilo del eje Y
+    p.yaxis.axis_label_text_font_size = "14pt"
+    p.yaxis.axis_label_text_font_style = "bold"
+    p.yaxis.axis_label_standoff = 15
+
+    # Ajustar el tamaño y el estilo del eje x
+    p.xaxis.axis_label_text_font_size = "15pt"
+    p.xaxis.axis_label_text_font_style = "bold"
+    p.xaxis.axis_label_standoff = 15
+
+    # Eliminar la cuadrícula
+    p.xgrid.visible = False  
+    p.ygrid.visible = False 
+    
+    # Formatear el eje Y para evitar notación científica
+    p.yaxis.formatter = NumeralTickFormatter(format="0,0")  # Formato sin notación científica
     
     # Información interactiva
     hover = HoverTool()
