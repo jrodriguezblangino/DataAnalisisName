@@ -184,15 +184,20 @@ def generar_mapa_distribucion_argentina():
     
     # Configurar colores para los mapas
     palette_rodriguez = Viridis256
+    
+    # Ajustar los valores de la escala de colores
+    low_value = merged_rodriguez['cantidad'].quantile(0.1)  # 10% del mínimo
+    high_value = merged_rodriguez['cantidad'].quantile(0.9)  # 90% del máximo
+    
     color_mapper_rodriguez = LinearColorMapper(
         palette=palette_rodriguez, 
-        low=merged_rodriguez['cantidad'].min(),
-        high=merged_rodriguez['cantidad'].max()
+        low=low_value,
+        high=high_value
     )
     
     # Aumentar el tamaño de la figura en un 20% y hacerla un poco más larga para mantener la figura correcta del mapa
-    figure_width = 960
-    figure_height = 720
+    figure_width = 720
+    figure_height = 760
     
     p1 = figure(
         title="Distribución del apellido Rodríguez por provincia",
