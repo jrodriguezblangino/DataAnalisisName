@@ -203,11 +203,13 @@ def generar_mapa_distribucion_argentina():
         title="Distribución del apellido Rodríguez por provincia",
         height=figure_height, 
         width=figure_width, 
-        toolbar_location="right",
-        title_text_font_size="18pt",  # Aumentar el tamaño del título
-        title_standoff=20,
-        title_align="center"  # Centrar el título
+        toolbar_location="right"
     )
+    
+    # Configurar el título
+    p1.title.text_font_size = "18pt"  # Aumentar el tamaño del título
+    p1.title.standoff = 20  # Aumentar el standoff del título
+    p1.title.align = "center"  # Centrar el título
     
     # Añadir los polígonos de las provincias
     p1.patches(
