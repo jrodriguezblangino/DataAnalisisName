@@ -177,6 +177,10 @@ def generar_mapa_distribucion_argentina():
         # Si no tenemos estimación global, hacemos una aproximación basada en los datos disponibles
         merged_combinacion['estimacion_joaquin_rodriguez'] = merged_rodriguez['cantidad'] * 0.01
     
+    # Asegúrate de que la columna 'provincia_nombre' esté en merged_rodriguez
+    if 'provincia_nombre' not in merged_rodriguez.columns:
+        merged_rodriguez['provincia_nombre'] = merged_rodriguez['provincia_norm']  # O la columna que corresponda
+
     # Convertir a GeoJSON para Bokeh
     geo_source_rodriguez = GeoJSONDataSource(geojson=merged_rodriguez.to_json())
     geo_source_joaquin = GeoJSONDataSource(geojson=merged_joaquin.to_json())
@@ -197,7 +201,7 @@ def generar_mapa_distribucion_argentina():
     
     # Aumentar el tamaño de la figura en un 20% y hacerla un poco más larga para mantener la figura correcta del mapa
     figure_width = 720
-    figure_height = 840
+    figure_height = 860
     
     p1 = figure(
         title="Distribución del apellido Rodríguez por provincia",
