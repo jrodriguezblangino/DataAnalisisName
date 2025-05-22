@@ -197,13 +197,16 @@ def generar_mapa_distribucion_argentina():
     
     # Aumentar el tamaño de la figura en un 20% y hacerla un poco más larga para mantener la figura correcta del mapa
     figure_width = 720
-    figure_height = 760
+    figure_height = 780
     
     p1 = figure(
         title="Distribución del apellido Rodríguez por provincia",
         height=figure_height, 
         width=figure_width, 
-        toolbar_location="right"
+        toolbar_location="right",
+        title_text_font_size="18pt",  # Aumentar el tamaño del título
+        title_standoff=20,
+        title_align="center"  # Centrar el título
     )
     
     # Añadir los polígonos de las provincias
