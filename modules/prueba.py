@@ -197,7 +197,7 @@ def generar_mapa_distribucion_argentina():
     
     # Aumentar el tamaño de la figura en un 20% y hacerla un poco más larga para mantener la figura correcta del mapa
     figure_width = 720
-    figure_height = 780
+    figure_height = 840
     
     p1 = figure(
         title="Distribución del apellido Rodríguez por provincia",
@@ -220,6 +220,14 @@ def generar_mapa_distribucion_argentina():
         line_width=0.5, 
         fill_alpha=0.7
     )
+    
+    # Ocultar los ejes X e Y
+    p1.xaxis.visible = False
+    p1.yaxis.visible = False
+    
+    # Ocultar la cuadrícula del fondo
+    p1.xgrid.visible = False
+    p1.ygrid.visible = False
     
     # Añadir la barra de color
     color_bar_rodriguez = ColorBar(
