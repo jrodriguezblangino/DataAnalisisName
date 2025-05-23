@@ -187,7 +187,7 @@ def generar_mapa_distribucion_argentina():
     geo_source_combinacion = GeoJSONDataSource(geojson=merged_combinacion.to_json())
     
     # Configurar colores para los mapas
-    palette_rodriguez = RdYlGn[256]  # Usar la paleta de rojo a verde
+    palette_rodriguez = RdYlGn[9]  # Usar la paleta de rojo a verde con 9 colores
     
     # Ajustar los valores de la escala de colores
     low_value = merged_rodriguez['cantidad'].quantile(0.1)  # 10% del mínimo
