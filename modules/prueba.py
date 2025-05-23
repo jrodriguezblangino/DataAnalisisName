@@ -4,7 +4,7 @@ from bokeh.models import (HoverTool, ColumnDataSource, Span, Label,
                          LabelSet, ColorBar, LinearColorMapper,NumeralTickFormatter)
 from bokeh.layouts import column, row, gridplot
 from bokeh.transform import factor_cmap, transform, linear_cmap
-from bokeh.palettes import Viridis256
+from bokeh.palettes import Viridis256, RdYlGn
 from bokeh.models import GeoJSONDataSource
 import warnings
 import os
@@ -187,7 +187,7 @@ def generar_mapa_distribucion_argentina():
     geo_source_combinacion = GeoJSONDataSource(geojson=merged_combinacion.to_json())
     
     # Configurar colores para los mapas
-    palette_rodriguez = Viridis256
+    palette_rodriguez = RdYlGn[256]  # Usar la paleta de rojo a verde
     
     # Ajustar los valores de la escala de colores
     low_value = merged_rodriguez['cantidad'].quantile(0.1)  # 10% del mínimo
