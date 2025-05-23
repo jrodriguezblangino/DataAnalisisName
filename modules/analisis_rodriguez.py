@@ -1,11 +1,10 @@
-
 import pandas as pd
 from bokeh.plotting import figure, output_file, save
 from bokeh.models import (HoverTool, ColumnDataSource, Span, Label,
                          LabelSet, ColorBar, LinearColorMapper,NumeralTickFormatter)
 from bokeh.layouts import column, row, gridplot
 from bokeh.transform import factor_cmap, transform, linear_cmap
-from bokeh.palettes import Viridis256
+from bokeh.palettes import Viridis256, RdYlGn
 from bokeh.models import GeoJSONDataSource
 import warnings
 import os
@@ -934,22 +933,31 @@ def generar_mapa_distribucion_argentina():
         # Si no tenemos estimación global, hacemos una aproximación basada en los datos disponibles
         merged_combinacion['estimacion_joaquin_rodriguez'] = merged_rodriguez['cantidad'] * 0.01
     
+    # Asegúrate de que la columna 'provincia_nombre' esté en merged_rodriguez
+    if 'provincia_nombre' not in merged_rodriguez.columns:
+        merged_rodriguez['provincia_nombre'] = merged_rodriguez['provincia_norm']  # O la columna que corresponda
+
     # Convertir a GeoJSON para Bokeh
     geo_source_rodriguez = GeoJSONDataSource(geojson=merged_rodriguez.to_json())
     geo_source_joaquin = GeoJSONDataSource(geojson=merged_joaquin.to_json())
     geo_source_combinacion = GeoJSONDataSource(geojson=merged_combinacion.to_json())
     
     # Configurar colores para los mapas
-    palette_rodriguez = Viridis256
+    palette_rodriguez = RdYlGn[9]  # Usar la paleta de rojo a verde con 9 colores
+    
+    # Ajustar los valores de la escala de colores
+    low_value = merged_rodriguez['cantidad'].quantile(0.1)  # 10% del mínimo
+    high_value = merged_rodriguez['cantidad'].quantile(0.9)  # 90% del máximo
+    
     color_mapper_rodriguez = LinearColorMapper(
         palette=palette_rodriguez, 
-        low=merged_rodriguez['cantidad'].min(),
-        high=merged_rodriguez['cantidad'].max()
+        low=low_value,
+        high=high_value
     )
     
-    # Crear figura
-    figure_width = 700
-    figure_height = 600
+    # Aumentar el tamaño de la figura en un 20% y hacerla un poco más larga para mantener la figura correcta del mapa
+    figure_width = 720
+    figure_height = 880
     
     p1 = figure(
         title="Distribución del apellido Rodríguez por provincia",
@@ -957,6 +965,11 @@ def generar_mapa_distribucion_argentina():
         width=figure_width, 
         toolbar_location="right"
     )
+    
+    # Configurar el título
+    p1.title.text_font_size = "18pt"  # Aumentar el tamaño del título
+    p1.title.standoff = 20  # Aumentar el standoff del título
+    p1.title.align = "center"  # Centrar el título
     
     # Añadir los polígonos de las provincias
     p1.patches(
@@ -967,6 +980,14 @@ def generar_mapa_distribucion_argentina():
         line_width=0.5, 
         fill_alpha=0.7
     )
+    
+    # Ocultar los ejes X e Y
+    p1.xaxis.visible = False
+    p1.yaxis.visible = False
+    
+    # Ocultar la cuadrícula del fondo
+    p1.xgrid.visible = False
+    p1.ygrid.visible = False
     
     # Añadir la barra de color
     color_bar_rodriguez = ColorBar(
@@ -991,6 +1012,7 @@ def generar_mapa_distribucion_argentina():
     print("Mapa de apellido Rodríguez guardado en visualizaciones/mapa_rodriguez_provincias.html")
     
     return "Mapa generado correctamente basado en datos reales."
+
 
 # Llamadas a las funciones
 print(analizar_posicionamiento_nacional())
