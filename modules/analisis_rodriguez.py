@@ -94,10 +94,10 @@ def analizar_posicionamiento_nacional():
     ranking = rodriguez_pais['ranking'].values[0]
     porcentaje = rodriguez_pais['porcentaje_de_poblacion_portadora'].values[0]
     
-    # Crear visualización Bokeh
+    # Crear visualización
     top_apellidos = apellidos_pais.sort_values('ranking').head(20)
     
-    # Crear colores para destacar Rodríguez
+    # Crear colores para destacar Rodriguez
     colors = ['#C70039' if apellido.lower() in ['rodriguez', 'rodríguez'] else '#1F77B4' 
               for apellido in top_apellidos['apellido']]
     
@@ -109,43 +109,43 @@ def analizar_posicionamiento_nacional():
 
     source = ColumnDataSource(top_apellidos)
     
-    p = figure(y_range=top_apellidos['apellido'], width=1200, height=800,  # Restaurar tamaño fijo
+    p = figure(y_range=top_apellidos['apellido'], width=1200, height=800,
               title="Top 20 Apellidos + Comunes en Argentina",
-              toolbar_location="right", sizing_mode="fixed")  # Cambiar a fixed para tamaño fijo
+              toolbar_location="right", sizing_mode="fixed")
     
     # Configurar el título
-    p.title.text_font_size = "18pt"  # Aumentar tamaño del título
-    p.title.align = "center"        # Centrar el título en el eje X
-    p.title.border_line_dash_offset = 10         # Separar el título del gráfico
+    p.title.text_font_size = "18pt"  
+    p.title.align = "center"        
+    p.title.border_line_dash_offset = 10
 
     # Calcular el rango del eje X con un margen adicional
     max_porcentaje = top_apellidos['porcentaje_de_poblacion_portadora'].max()
     p.x_range.end = max_porcentaje * 1.1  # Agregar un 10% de margen al rango máximo
 
     # Ajustar el rango del eje Y para agregar un margen superior
-    p.y_range.range_padding = 0.1  # Agregar un 10% de margen superior
+    p.y_range.range_padding = 0.1
 
     # Aumentar el tamaño de los apellidos en el eje Y
     p.yaxis.major_label_text_font_size = "14pt"
 
     # Crear barras
     bars = p.hbar(y='apellido', right='porcentaje_de_poblacion_portadora', 
-                 source=source, height=0.8, color='color')  # Usar la columna 'color'
+                 source=source, height=0.8, color='color')
     
     # Añadir etiquetas de porcentaje
     labels = LabelSet(x='porcentaje_de_poblacion_portadora', y='apellido', 
                      text='porcentaje_de_poblacion_portadora', level='glyph',
-                     x_offset=10,  # Separar un poco más las etiquetas horizontalmente
-                     y_offset=-5,  # Centrar verticalmente las etiquetas con las barras
+                     x_offset=10,
+                     y_offset=-5,
                      source=source, 
-                     text_font_size='14pt')  # Aumentar tamaño de los apellidos
+                     text_font_size='14pt')
     
     p.add_layout(labels)
     
     # Configuración del gráfico
     p.xaxis.axis_label = "Porcentaje de la Población (%)"
-    p.xaxis.axis_label_text_font_size = "15pt"  # Aumentar levemente el tamaño del texto del eje X
-    p.xaxis.major_label_text_font_size = "13pt"  # Aumentar el tamaño de los números de los marcadores del eje X
+    p.xaxis.axis_label_text_font_size = "15pt" 
+    p.xaxis.major_label_text_font_size = "13pt"  
     p.xgrid.grid_line_color = None
     
     # Añadir información interactiva
@@ -164,6 +164,7 @@ def analizar_posicionamiento_nacional():
     
     return f"El apellido Rodríguez ocupa el puesto {ranking} a nivel nacional, " \
            f"siendo portado por aproximadamente el {porcentaje}% de la población argentina."
+
 
 
 # --------------------------------------
