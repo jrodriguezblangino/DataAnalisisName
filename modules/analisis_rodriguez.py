@@ -264,8 +264,8 @@ def comparar_provincias():
     
     # Crear colores para las barras
     colores = ['#C70039'] * 5 + ['#1F77B4'] * 5
-    combined['color'] = colores  # Agregar la columna de colores
-    
+    combined['color'] = colores
+
     # Crear gráfico
     source = ColumnDataSource(combined)
     
@@ -273,10 +273,10 @@ def comparar_provincias():
               title="Provincias con Mayor y Menor Presencia del Apellido Rodríguez",
               toolbar_location="right")
     
-    # Ajustar el tamaño de la fuente del título
-    p.title.text_font_size = "12pt"  # Aumentar tamaño del título
-    p.title.standoff = 20  # Aumentar padding inferior del título
-    p.title.align = "center"  # Centrar el título
+    # Ajustar el título
+    p.title.text_font_size = "12pt"  #
+    p.title.standoff = 20  # 
+    p.title.align = "center"  
     
     # Crear barras
     bars = p.hbar(y='provincia_nombre', right='cantidad', height=0.8, 
@@ -290,8 +290,8 @@ def comparar_provincias():
     p.xgrid.grid_line_color = None
     
     # Ajustar el rango del eje X para que el cero coincida con el eje Y
-    p.x_range.start = 0  # Asegurarse de que el inicio del eje X sea 0
-    p.x_range.end = combined['cantidad'].max() * 1.1  # Aumentar el rango para dar margen (10% más)
+    p.x_range.start = 0
+    p.x_range.end = combined['cantidad'].max() * 1.1
 
     # Formatear los números del eje X
     p.xaxis.formatter = NumeralTickFormatter(format="0,0")
@@ -414,7 +414,7 @@ def analizar_cordoba():
            f"{ranking_texto}."
 
 # --------------------------------------
-# 6. Evolución histórica del nombre Joaquín
+# 5. Evolución histórica del nombre Joaquín
 # --------------------------------------
 
 def analizar_evolucion_historica():
