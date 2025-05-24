@@ -189,31 +189,31 @@ def crear_mapa_distribucion():
     
     source = ColumnDataSource(provincias_ordenadas)
     
-    # Crear gráfico de barras con un tamaño mayor
+    # Crear gráfico de barras
     p = figure(x_range=provincias_ordenadas['provincia_nombre'], 
-               width=1200, height=600,  # Aumentar el tamaño del gráfico
+               width=1200, height=600,
                title="Distribución del Apellido Rodríguez por Provincia",
                toolbar_location="right",
-               title_location="above")  # Ubicación del título
+               title_location="above")
     
-    # Ajustar el tamaño de la fuente del título
-    p.title.text_font_size = "20pt"  # Aumentar tamaño del título
-    p.title.standoff = 20  # Aumentar padding inferior del título
-    p.title.align = "center"  # Centrar el título
+    # Ajustar el título
+    p.title.text_font_size = "20pt"  
+    p.title.standoff = 20  
+    p.title.align = "center"
     
     # Ajustar títulos de los ejes
     p.xaxis.axis_label = "Provincia"
-    p.yaxis.axis_label = "Cantidad de personas (en miles)"  # Modificar título del eje Y
-    p.yaxis.axis_label_standoff = 15  # Aumentar padding del título del eje Y
-    p.xaxis.axis_label_text_font_size = "16pt"  # Aumentar tamaño del título del eje X
-    p.yaxis.axis_label_text_font_size = "16pt"  # Aumentar tamaño del título del eje Y
+    p.yaxis.axis_label = "Cantidad de personas (en miles)"  
+    p.yaxis.axis_label_standoff = 15 
+    p.xaxis.axis_label_text_font_size = "16pt"  
+    p.yaxis.axis_label_text_font_size = "16pt"
     
     # Crear barras usando la nueva columna de colores
     p.vbar(x='provincia_nombre', top='cantidad_miles', width=0.8, source=source,
-           fill_color='color')  # Referenciar la columna de colores
+           fill_color='color')
     
     # Configuración del gráfico
-    p.xaxis.major_label_orientation = 3.14/4  # Rotar etiquetas del eje X
+    p.xaxis.major_label_orientation = 3.14/4  
     p.yaxis.formatter.use_scientific = False  # Desactivar notación científica
     
     # Eliminar cuadrícula del fondo
