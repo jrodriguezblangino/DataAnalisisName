@@ -27,7 +27,7 @@ historico_nombres = pd.read_csv('docs/historico-nombres_clean.csv')
 # Preparar datos relevantes para el análisis
 print("Preparando datasets específicos para el análisis...")
 
-# Buscar el apellido Rodríguez (probar con y sin tilde)
+# Buscar el apellido Rodriguez
 rodriguez_pais = apellidos_pais[apellidos_pais['apellido'].str.lower() == 'rodriguez']
 if len(rodriguez_pais) == 0:
     rodriguez_pais = apellidos_pais[apellidos_pais['apellido'].str.lower() == 'rodríguez']
@@ -42,7 +42,7 @@ rodriguez_ranking_provincias = apellidos_provincia_ranking[apellidos_provincia_r
 if len(rodriguez_ranking_provincias) == 0:
     rodriguez_ranking_provincias = apellidos_provincia_ranking[apellidos_provincia_ranking['apellido'].str.lower() == 'rodríguez']
 
-# Buscar el nombre Joaquin (probar con y sin tilde)
+# Buscar el nombre Joaquin
 joaquin_historico = historico_nombres[historico_nombres['nombre'].str.lower() == 'joaquin']
 if len(joaquin_historico) == 0:
     joaquin_historico = historico_nombres[historico_nombres['nombre'].str.lower() == 'joaquín']
@@ -50,7 +50,7 @@ if len(joaquin_historico) == 0:
 # Imprimir las columnas de joaquin_historico para verificar
 print("Columnas de joaquin_historico:", joaquin_historico.columns)
 
-# Asegúrate de que la columna 'provincia_nombre' existe
+# Chequeo de que la columna 'provincia_nombre' existe
 if 'provincia_nombre' in joaquin_historico.columns:
     # Crear un DataFrame que contenga la cantidad de Joaquín por provincia
     joaquin_por_provincia = joaquin_historico.groupby('provincia_nombre')['cantidad'].sum().reset_index()
