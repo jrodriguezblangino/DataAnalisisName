@@ -42,7 +42,7 @@ rodriguez_ranking_provincias = apellidos_provincia_ranking[apellidos_provincia_r
 if len(rodriguez_ranking_provincias) == 0:
     rodriguez_ranking_provincias = apellidos_provincia_ranking[apellidos_provincia_ranking['apellido'].str.lower() == 'rodríguez']
 
-# Buscar el nombre Joaquín (probar con y sin tilde)
+# Buscar el nombre Joaquin (probar con y sin tilde)
 joaquin_historico = historico_nombres[historico_nombres['nombre'].str.lower() == 'joaquin']
 if len(joaquin_historico) == 0:
     joaquin_historico = historico_nombres[historico_nombres['nombre'].str.lower() == 'joaquín']
