@@ -427,7 +427,7 @@ def analizar_evolucion_historica():
     # Agrupar por año y sumar
     joaquin_por_anio = joaquin_historico.groupby('anio')['cantidad'].sum().reset_index()
     
-        # Crear gráfico interactivo con Bokeh
+    # Crear gráfico interactivo
     source = ColumnDataSource(joaquin_por_anio)
     
     p = figure(width=1080, height=600, 
@@ -437,19 +437,16 @@ def analizar_evolucion_historica():
               toolbar_location="right")
     
     # Ajustar el tamaño de la fuente del título
-    p.title.text_font_size = "18pt"  # Tamaño del título
-    p.title.standoff = 20  # Espaciado inferior del título
-    p.title.align = "center"  # Centrar el título
+    p.title.text_font_size = "18pt"
+    p.title.standoff = 20 
+    p.title.align = "center"
 
-
-    #Ajustar el tamaño y el estilo del eje Y
+    # Ajustar el tamaño y el estilo de los ejes
 
     p.yaxis.axis_label_text_font_size = "14pt"
     p.yaxis.axis_label_text_font_style = "bold"
     p.yaxis.axis_label_standoff = 15
 
-
-    #Ajustar el tamaño y el estilo del eje x
 
     p.xaxis.axis_label_text_font_size = "12pt"
     p.xaxis.axis_label_text_font_style = "bold"
@@ -486,7 +483,7 @@ def analizar_evolucion_historica():
 
     
 # --------------------------------------
-# 7. Picos de popularidad del nombre Joaquín
+# 6. Picos de popularidad del nombre Joaquin
 # --------------------------------------
 
 def identificar_picos_popularidad():
