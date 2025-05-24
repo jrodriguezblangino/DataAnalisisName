@@ -52,15 +52,16 @@ print("Columnas de joaquin_historico:", joaquin_historico.columns)
 
 # Chequeo de que la columna 'provincia_nombre' existe
 if 'provincia_nombre' in joaquin_historico.columns:
-    # Crear un DataFrame que contenga la cantidad de Joaquín por provincia
+
+
+# Creacion de un DataFrame que contenga la cantidad de 'Joaquin' por provincia
     joaquin_por_provincia = joaquin_historico.groupby('provincia_nombre')['cantidad'].sum().reset_index()
     joaquin_por_provincia.rename(columns={'cantidad': 'cantidad_joaquin'}, inplace=True)
 else:
     print("Error: 'provincia_nombre' no se encuentra en joaquin_historico.")
-    # Aquí puedes manejar el error como desees, por ejemplo, asignar un DataFrame vacío o lanzar una excepción.
     joaquin_por_provincia = pd.DataFrame(columns=['provincia_nombre', 'cantidad_joaquin'])
 
-# Ahora, combinamos este DataFrame con rodriguez_provincias
+# Combinar este DataFrame con rodriguez_provincias
 rodriguez_provincias = rodriguez_provincias.merge(joaquin_por_provincia, on='provincia_nombre', how='left')
 
 # Ordenar datos históricos por año
@@ -72,6 +73,11 @@ print(f"\nDatos de apellido Rodríguez a nivel país: {len(rodriguez_pais)} regi
 print(f"Datos de apellido Rodríguez por provincia: {len(rodriguez_provincias)} registros")
 print(f"Datos de ranking de Rodríguez por provincia: {len(rodriguez_ranking_provincias)} registros")
 print(f"Datos históricos del nombre Joaquín: {len(joaquin_historico)} registros")
+
+
+
+#En este punto, los DataFrames rodriguez_pais, rodriguez_provincias y joaquin_historico están preparados para su análisis. Se pueden utilizar en las siguientes funciones para generar visualizaciones y análisis específicos.
+
 
 # --------------------------------------
 # 1. Posicionamiento nacional del apellido Rodríguez
