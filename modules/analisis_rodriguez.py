@@ -516,32 +516,30 @@ def identificar_picos_popularidad():
               x_axis_label="Año", y_axis_label="Cantidad de Nacimientos",
               toolbar_location="right")
     
-    # Ajustar el tamaño de la fuente del título
-    p.title.text_font_size = "18pt"  # Tamaño del título
-    p.title.standoff = 20  # Espaciado inferior del título
-    p.title.align = "center"  # Centrar el título
+    # Ajustar el título
+    p.title.text_font_size = "18pt"
+    p.title.standoff = 20  
+    p.title.align = "center"
 
-     #Ajustar el tamaño y el estilo del eje Y
+     #Ajustar ejes
 
     p.yaxis.axis_label_text_font_size = "14pt"
     p.yaxis.axis_label_text_font_style = "bold"
     p.yaxis.axis_label_standoff = 15
 
-       #Ajustar el tamaño y el estilo del eje x
-
     p.xaxis.axis_label_text_font_size = "12pt"
     p.xaxis.axis_label_text_font_style = "bold"
     p.xaxis.axis_label_standoff = 15
     
-    # Añadir un punto destacado para el nacimiento el 16 de julio de 1991
-    fecha_nacimiento = 1991  # Año de nacimiento
+    # Añadir un punto destacado para mi nacimiento
+    fecha_nacimiento = 1991 
     nacimiento_cantidad = joaquin_por_anio[joaquin_por_anio['anio'] == fecha_nacimiento]['cantidad'].sum()
 
     # Crear un DataFrame para el punto destacado
     nacimiento_data = pd.DataFrame({
         'anio': [fecha_nacimiento],
         'cantidad': [nacimiento_cantidad],
-        'cambio_porcentual': [None]  # No se necesita para el punto destacado
+        'cambio_porcentual': [None]
     })
 
     # Crear un ColumnDataSource para el nacimiento
@@ -617,7 +615,7 @@ def identificar_picos_popularidad():
     return f"{pico_info} {caida_info}"
 
 # --------------------------------------
-# 9. Comparativa generacional del nombre Joaquín
+# 7. Comparativa generacional del nombre Joaquín
 # --------------------------------------
 
 def analizar_generaciones():
@@ -725,7 +723,7 @@ def analizar_generaciones():
            f"con un promedio de {prom_max:.0f} nacimientos por año."
 
 # --------------------------------------
-# 10. Unicidad de la combinación Joaquín Rodríguez
+# 8. Unicidad de la combinación Joaquín Rodríguez
 # --------------------------------------
 
 # Variable global para almacenar la estimación
@@ -836,7 +834,7 @@ def estimar_unicidad_combinacion():
     return f"Se estima que hay aproximadamente {estimacion_joaquin_rodriguez:.0f} personas llamadas Joaquín Rodríguez en Argentina."
 
 # --------------------------------------
-# 11. Generar mapa interactivo de distribución
+# 9. Generar mapa interactivo de distribución
 # --------------------------------------
 
 def generar_mapa_distribucion_argentina():
