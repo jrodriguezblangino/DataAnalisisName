@@ -672,16 +672,15 @@ def analizar_generaciones():
                toolbar_location="right")
     
     # Ajustar título
-    p.title.text_font_size = "18pt"  # Tamaño del título
-    p.title.standoff = 20  # Espaciado inferior del título
-    p.title.align = "center"  # Centrar el título
+    p.title.text_font_size = "18pt"  
+    p.title.standoff = 20  
+    p.title.align = "center"
 
-    # Ajustar el tamaño y el estilo del eje Y
+    # Ajustar ejes
     p.yaxis.axis_label_text_font_size = "14pt"
     p.yaxis.axis_label_text_font_style = "bold"
     p.yaxis.axis_label_standoff = 15
 
-    # Ajustar el tamaño y el estilo del eje x
     p.xaxis.axis_label_text_font_size = "15pt"
     p.xaxis.axis_label_text_font_style = "bold"
     p.xaxis.axis_label_standoff = 15
@@ -730,7 +729,7 @@ def analizar_generaciones():
 estimacion_joaquin_rodriguez = 0
 
 def estimar_unicidad_combinacion():
-    global estimacion_joaquin_rodriguez  # Hacer que la variable sea global
+    global estimacion_joaquin_rodriguez
     print("\n10. Estimando unicidad de la combinación Joaquín Rodríguez...")
     
     if len(rodriguez_pais) == 0 or len(joaquin_historico) == 0:
@@ -788,14 +787,14 @@ def estimar_unicidad_combinacion():
                toolbar_location="right")  # Cambiar a escala lineal
     
     p.vbar(x='labels', top='valores', width=0.4, source=source,
-           color='colores')  # Usar la columna de colores
+           color='colores') 
     
-    p.y_range.start = 1  # Comenzar desde 1 en escala lineal
+    p.y_range.start = 1 
     p.xgrid.grid_line_color = None
     p.yaxis.axis_label = "Estimación de Personas"
     p.xaxis.major_label_orientation = 3.14/4
 
-    # Ajustar el tamaño de la fuente del título
+    # Ajustar título
     p.title.text_font_size = "18pt"  # Tamaño del título
     p.title.standoff = 20  # Espaciado inferior del título
     p.title.align = "center"  # Centrar el título
