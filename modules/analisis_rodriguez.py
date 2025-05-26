@@ -639,7 +639,7 @@ def analizar_generaciones():
     datos_generacionales = []
     
     for gen_nombre, (inicio, fin) in generaciones.items():
-        # Filtrar datos para esta generación
+        # Filtrar datos para mi generación
         gen_data = joaquin_historico[
             (joaquin_historico['anio'] >= inicio) & 
             (joaquin_historico['anio'] <= fin)
@@ -671,7 +671,7 @@ def analizar_generaciones():
                title="Popularidad del Nombre Joaquín por Generación",
                toolbar_location="right")
     
-    # Ajustar el tamaño de la fuente del título
+    # Ajustar título
     p.title.text_font_size = "18pt"  # Tamaño del título
     p.title.standoff = 20  # Espaciado inferior del título
     p.title.align = "center"  # Centrar el título
