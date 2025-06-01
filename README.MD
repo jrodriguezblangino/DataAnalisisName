@@ -13,7 +13,7 @@ Este proyecto se centra en la limpieza y transformación de diversas bases de da
 - [8. Enlaces](#8-enlaces)
 
 ## 1. Introducción
-El objetivo de este proyecto es preparar conjuntos de datos para un análisis más profundo, asegurando que los datos sean consistentes, limpios y listos para su uso. Se trabajó con archivos CSV que contenían información sobre apellidos y nombres, los cuales presentaban caracteres sospechosos y errores de codificación.
+El objetivo de este proyecto es preparar conjuntos de datos para un análisis más profundo, asegurando que los datos sean consistentes, limpios y listos para su uso. Se trabajó con archivos CSV que contenían información sobre apellidos y nombres, los cuales presentaban caracteres sospechosos y errores de codificación. 
 
 ## 2. Materiales Utilizados
 
