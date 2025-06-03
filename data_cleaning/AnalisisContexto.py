@@ -1,3 +1,7 @@
+"""Este código es una herramienta para analizar datos de apellidos y nombres,
+identificando y documentando caracteres no ASCII en los datos,
+ lo que resulta esencial para posterior limpieza y normalización de datos"""
+
 import pandas as pd
 import re
 from io import StringIO
